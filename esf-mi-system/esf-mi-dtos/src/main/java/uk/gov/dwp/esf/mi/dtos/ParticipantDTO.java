@@ -1,6 +1,6 @@
 package uk.gov.dwp.esf.mi.dtos;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -8,8 +8,8 @@ import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+//import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+//import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import uk.gov.dwp.esf.mi.common.Address;
 import uk.gov.dwp.esf.mi.common.EntryEmpStatus;
@@ -44,9 +44,9 @@ public class ParticipantDTO {
 	private String nino;
 	@NotNull(message="error.dob.null")
 	@JsonView(View.SummaryWithBasicParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate dob;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date dob;
 	@JsonView(View.SummaryWithFullParticipants.class)
 	private Ethnicity ethnicity;
 	@JsonView(View.SummaryWithFullParticipants.class)
@@ -72,27 +72,27 @@ public class ParticipantDTO {
 	@JsonView(View.SummaryWithFullParticipants.class)
 	private HouseHoldType householdType;
 	@JsonView(View.SummaryWithBasicParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate creationDate;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date creationDate;
 	@JsonView(View.SummaryWithBasicParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate updatedDate;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date updatedDate;
 	@JsonView(View.SummaryWithBasicParticipants.class)
 	private RecordState recordState;
 	@JsonView(View.SummaryWithFullParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate startDate;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date startDate;
 	@JsonView(View.SummaryWithFullParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate proposedExitDate;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date proposedExitDate;
 	@JsonView(View.SummaryWithFullParticipants.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate exitDate;
+	@JsonDeserialize(using = CustomDateDeSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date exitDate;
 	@NotNull(message="error.contractId.null")
 	@JsonView(View.SummaryWithBasicParticipants.class)
 	private Integer contractId;
@@ -172,10 +172,10 @@ public class ParticipantDTO {
 	public void setNino(String nino) {
 		this.nino = nino;
 	}
-	public LocalDate getDob() {
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(LocalDate dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 	public Ethnicity getEthnicity() {
@@ -250,16 +250,16 @@ public class ParticipantDTO {
 	public void setHouseholdType(HouseHoldType householdType) {
 		this.householdType = householdType;
 	}
-	public LocalDate getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(LocalDate creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	public LocalDate getUpdatedDate() {
+	public Date getUpdatedDate() {
 		return updatedDate;
 	}
-	public void setUpdatedDate(LocalDate updatedDate) {
+	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 	public RecordState getRecordState() {
@@ -268,22 +268,22 @@ public class ParticipantDTO {
 	public void setRecordState(RecordState recordState) {
 		this.recordState = recordState;
 	}
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public LocalDate getProposedExitDate() {
+	public Date getProposedExitDate() {
 		return proposedExitDate;
 	}
-	public void setProposedExitDate(LocalDate proposedExitDate) {
+	public void setProposedExitDate(Date proposedExitDate) {
 		this.proposedExitDate = proposedExitDate;
 	}
-	public LocalDate getExitDate() {
+	public Date getExitDate() {
 		return exitDate;
 	}
-	public void setExitDate(LocalDate exitDate) {
+	public void setExitDate(Date exitDate) {
 		this.exitDate = exitDate;
 	}
 	public Integer getContractId() {

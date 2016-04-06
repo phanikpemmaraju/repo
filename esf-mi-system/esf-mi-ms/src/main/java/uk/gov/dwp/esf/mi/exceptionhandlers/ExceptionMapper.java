@@ -32,7 +32,7 @@ public class ExceptionMapper{
      */
     private ErrorMessage mapError(DataException exception,HttpStatus httpStatus) {
     	//final ErrorMessage error = new ErrorMessage.ErrorBuilder(String.valueOf(httpStatus.value()),exception.getMessage(),httpStatus.getReasonPhrase()).build();
-    	final ErrorMessage error = new ErrorMessage.ErrorBuilder(exception.getCode(),exception.getMessage(),httpStatus.getReasonPhrase()).build();
+    	final ErrorMessage error = new ErrorMessage.ErrorBuilder(exception.getCode(),exception.getMessage(),httpStatus.getReasonPhrase(),"https://confluence.dwp.gov.uk/participant/errorcodes/"+exception.getCode()).build();
     	return error;
     }
 
@@ -46,7 +46,7 @@ public class ExceptionMapper{
      */
 	private ErrorMessage mapError(FieldError fieldError,HttpStatus httpStatus) {
     	//final ErrorMessage error = new ErrorMessage.ErrorBuilder(String.valueOf(httpStatus.value()),fieldError.getDefaultMessage(),httpStatus.getReasonPhrase()).build();
-		final ErrorMessage error = new ErrorMessage.ErrorBuilder(fieldError.getDefaultMessage(),"Field Error on field " + fieldError.getField(),httpStatus.getReasonPhrase()).build();
+		final ErrorMessage error = new ErrorMessage.ErrorBuilder(fieldError.getDefaultMessage(),"Field Error on field " + fieldError.getField(),httpStatus.getReasonPhrase(),"https://confluence.dwp.gov.uk/participant/errorcodes/"+fieldError.getDefaultMessage()).build();
     	return error;
     }
     

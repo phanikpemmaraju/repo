@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	*****************************************************************************************************************
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************
+	*     2.0     *  Johanna Bismuth   * 01/03/05   * Created from Release 1 code after adding the 
+	*			  *					   *			* functionality for API038 GetPerson 
+	*     2.0a    *  Johanna Bismuth   * 01/03/05   * Updates after changes to the data groups
+	*     2.0b    *  Simon Callan      * 14/03/05   * Updated to import the common CIS types
+	*     2.0c    *  Mohammad Hassan   * 22/03/05   * Extracted Release 1 operations to follow 1 operation per wsdl standard
+	*     2.0d    *  Daniel Dor-Chay   * 24/03/05   * added extra fields and removed redundant fields also appended ID to type fields
+	*     2.1     *  Daniel Dor-Chay   * 04/07/05   * added extra fields and renamed maritalStatusType to civilStatusType
+	*     2.2     *  Mirko Carlini     * 01/02/06   * Added Gender Recognition fields for Rel 2c
+	* 	  3.0     *  Fawad Sikandar	   * 29/05/07 	* Added maintenance data for nationality type and updated other data group
+* 	  3.1     *  Steve de Silva	   * 08/05/08 	* Added person indicator data
+	*****************************************************************************************************************
+-->
+<wsdl:definitions xmlns:tns1="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1/API038_GetPerson" 
+							xmlns:tns5="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.1/API038_GetPerson" 
+							xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+							xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+							xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" 
+							xmlns:impl="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1" 
+							xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+							xmlns:intf="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1" 
+							xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+							targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1">
+	<wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd"/>
+	<wsdl:types>
+		<schema elementFormDefault="qualified" 
+			targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1/API038_GetPerson" 
+			xmlns="http://www.w3.org/2001/XMLSchema" 
+			xmlns:impl="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1" 
+			xmlns:intf="http://dwp.gov.uk/Common/CIS/GetPerson/Service/3.1" 
+			xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+			xmlns:tns2="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" 
+			xmlns:tns3="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.2/API038_GetPerson" 
+			xmlns:tns4="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.0/API038_GetPerson"
+			xmlns:tns5="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.1/API038_GetPerson"
+			 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+			 xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			 
+			<import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd"/>
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" schemaLocation="CorporateCISGetPerson02.1.xsd"/>
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.2/API038_GetPerson" schemaLocation="CorporateCISGetPerson02.2.xsd"/>
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.0/API038_GetPerson" schemaLocation="CorporateCISGetPerson03.0.xsd"/>
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.1/API038_GetPerson" schemaLocation="CorporateCISGetPerson03.1.xsd"/>
+			<!-- GetRequest type -->
+			<complexType name="API038_GetPersonRequest">
+				<sequence>
+					<element name="header" nillable="false" type="ciscommon:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="historicIndicator" nillable="false" type="xsd:boolean"/>
+				</sequence>
+			</complexType>
+			<!-- GetResponse type -->
+			<complexType name="API038_GetPersonResponse">
+				<sequence>
+					<element name="header" nillable="false" type="ciscommon:ResponseHeader"/>
+					<element name="person" nillable="false" type="tns4:Person"/>
+					<element name="personHist" nillable="true" type="tns4:PersonHist"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="specialNeeds" nillable="false" type="tns3:SpecialNeeds"/>
+					<element name="supersedingNino" nillable="true" type="tns2:PersonSupNino"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="formerNinos" nillable="false" type="tns2:PersonSupNino"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="genderRecognition" nillable="false" type="tns3:GenderRecognition"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="natTpGroup" nillable="true" type="tns4:NatTpGroup"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="otherDataGroup" nillable="true" type="tns4:OtherDataGroup"/>
+					<element minOccurs="0" maxOccurs="unbounded" name="personIndicatorDataGroup" nillable="true" type="tns5:PersonIndDataGroup"/>
+				</sequence>
+			</complexType>
+			<!-- GetRequest and GetResponse elements -->
+			<element name="getPersonRequest" nillable="false" type="tns1:API038_GetPersonRequest"/>
+			<element name="getPersonResponse" nillable="false" type="tns1:API038_GetPersonResponse"/>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="CISFaultDetails">
+		<wsdl:part name="fault" element="ciscommon:CISFaultDetails"/>
+	</wsdl:message>
+	<wsdl:message name="GetPersonRequest">
+		<wsdl:part name="parameters" element="tns1:getPersonRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="GetPersonResponse">
+		<wsdl:part name="parameters" element="tns1:getPersonResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:portType name="CorporateCISGetPersonWS03_1">
+		<!-- Operation added for GetPerson -->
+		<wsdl:operation name="GetPerson">
+			<wsdl:input name="GetPersonRequest" message="impl:GetPersonRequest"/>
+			<wsdl:output name="GetPersonResponse" message="impl:GetPersonResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CorporateCISGetPersonWebService03_1SoapBinding" type="impl:CorporateCISGetPersonWS03_1">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<!-- Operation added for GetPerson -->
+		<wsdl:operation name="GetPerson">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:GetPersonRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:GetPersonResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CorporateCISGetPersonWebService03_1">
+		<wsdl:port name="CorporateCISGetPersonWS03_1" binding="impl:CorporateCISGetPersonWebService03_1SoapBinding">
+			<wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/CorporateCISGetPersonWS03_1"/>
+		</wsdl:port>
+	</wsdl:service>
+	<!-- Message added for GetPerson -->
+</wsdl:definitions>

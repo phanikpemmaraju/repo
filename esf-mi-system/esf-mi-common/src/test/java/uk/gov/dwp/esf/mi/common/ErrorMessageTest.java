@@ -8,24 +8,25 @@ public class ErrorMessageTest {
 	
 	@Test
     public void shouldReturnErrorBuilder() {
-		assertThat(new ErrorMessage.ErrorBuilder(null, null, null),isA(ErrorMessage.ErrorBuilder.class));
+		assertThat(new ErrorMessage.ErrorBuilder(null, null, null,null),isA(ErrorMessage.ErrorBuilder.class));
     }
 	
 	@Test
     public void shouldBuildADefaultError() {
-        assertThat(new ErrorMessage.ErrorBuilder(null, null, null).build(), isA(ErrorMessage.class));
+        assertThat(new ErrorMessage.ErrorBuilder(null, null, null,null).build(), isA(ErrorMessage.class));
     }
 	
 	@Test
     public void shouldBuildAnErrorMessage() {
-		ErrorMessage error = new ErrorMessage.ErrorBuilder("400","Invalid NI","Bad Request")
+		ErrorMessage error = new ErrorMessage.ErrorBuilder("400","Invalid NI","Bad Request","https://confluence.dwp.gov.uk/participant/errorcodes/400")
                 .build();
 
         assertThat(error.getCode(), is("400"));
         assertThat(error.getMessage(), is("Invalid NI"));
         assertThat(error.getDescription(), is("Bad Request"));
+        assertThat(error.getUrl(), is("https://confluence.dwp.gov.uk/participant/errorcodes/400"));
                 
-        final String value = "ErrorMessage [code=400, message=Invalid NI, description=Bad Request]";
+        final String value = "ErrorMessage [code=400, message=Invalid NI, description=Bad Request, url=https://confluence.dwp.gov.uk/participant/errorcodes/400]";
         assertThat(error.toString(), is(value));
     }
 

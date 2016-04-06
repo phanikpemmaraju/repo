@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************ 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.0     *  Paul Beharry   * 02/05/05   * Created
+	*****************************************************************************************************************-->
+	<!-- 
+	* $Author: Ddorchay $
+	* $Date: 22/06/05 22:14 $
+	* $Modtime: 22/06/05 19:27 $
+	* $Revision: 7 $
+	* $Workfile: CorporateCISGetAddressDetailsWebService02.wsdl $
+-->
+<wsdl:definitions 
+xmlns:tns1="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1/API007_GetAddressDetails" 
+xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" 
+xmlns:impl="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:intf="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1" 
+xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+targetNamespace="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1">
+	
+	<wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd" />
+	<wsdl:types>
+		<!-- Schema added for GetAddressDetails -->
+		<schema elementFormDefault="qualified" 
+		targetNamespace="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1/API007_GetAddressDetails" 
+		xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:impl="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1" 
+		xmlns:tns2="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.1/API007_GetAddressDetails"
+		xmlns:intf="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Service/2.1"
+		xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd"/>			
+		<import namespace="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.1/API007_GetAddressDetails" schemaLocation="GetAddressDetails02_1.xsd"/>
+		<!-- GetResponse type -->		
+		<xsd:complexType name="API007_GetAddressDetailsRequest">
+				<xsd:sequence>
+					<xsd:element name="header" nillable="false" type="ciscommon:RequestHeader" />
+					<xsd:element name="nino" nillable="false" type="xsd:string" />
+					<xsd:element name="historyFlag" nillable="true" type="xsd:boolean" />
+					<xsd:element name="roleTypeID" nillable="true" type="xsd:string" />
+				</xsd:sequence>	
+			</xsd:complexType>
+			<xsd:complexType name="API007_GetAddressDetailsResponse">
+				<xsd:sequence>
+					<xsd:element name="header" nillable="false" type="ciscommon:ResponseHeader" />
+					<xsd:element maxOccurs="unbounded" name="personAddress" nillable="false" type="tns2:AddressDetails" />
+					<xsd:element maxOccurs="unbounded" name="personAddressHist" nillable="true" type="tns2:AddressDetails" />
+				</xsd:sequence>
+			</xsd:complexType>
+		<!-- GetRequest and GetResponse xs:elements -->
+			<xsd:element name="getAddressDetailsRequest" nillable="false" type="tns1:API007_GetAddressDetailsRequest" />
+			<xsd:element name="getAddressDetailsResponse" nillable="false" type="tns1:API007_GetAddressDetailsResponse" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="CISFaultDetails">
+		<wsdl:part name="fault" element="ciscommon:CISFaultDetails" />
+	</wsdl:message>
+	<!-- Message added for GetAddressDetails -->
+	<wsdl:message name="GetAddressDetailsRequest">
+		<wsdl:part name="parameters" element="tns1:getAddressDetailsRequest" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:message name="GetAddressDetailsResponse">
+		<wsdl:part name="parameters" element="tns1:getAddressDetailsResponse" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:portType name="CorporateCISGetAddressDetailsWS02_1">
+		<!-- Operation added for GetAddressDetails -->
+		<wsdl:operation name="GetAddressDetails">
+			<wsdl:input name="getAddressDetailsRequest" message="impl:GetAddressDetailsRequest" />
+			<wsdl:output name="getAddressDetailsResponse" message="impl:GetAddressDetailsResponse" />
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CorporateCISGetAddressDetailsWebService02_1SoapBinding" type="impl:CorporateCISGetAddressDetailsWS02_1">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- Operation added for GetAddressDetails -->
+		<wsdl:operation name="GetAddressDetails">
+			<wsdlsoap:operation />
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetAddressDetailsRequest" part="ibheader" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetAddressDetailsResponse" part="ibheader" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CorporateCISGetAddressDetailsWebService02_1">
+		<wsdl:port name="CorporateCISGetAddressDetailsWS02_1" binding="impl:CorporateCISGetAddressDetailsWebService02_1SoapBinding">
+			<wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/CorporateCISGetAddressDetailsWS02_1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
+

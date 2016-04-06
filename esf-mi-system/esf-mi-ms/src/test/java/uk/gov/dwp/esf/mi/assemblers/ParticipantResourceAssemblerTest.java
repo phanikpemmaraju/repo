@@ -22,8 +22,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+//import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -37,10 +40,12 @@ public class ParticipantResourceAssemblerTest {
 	private Page<Participant> participants;
 	
 	private ModelMapper modelMapper;
+	private SimpleDateFormat dateFormat;
 	
 	@Before
 	public void setUp(){
 		modelMapper = new ModelMapper();
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 	/*
@@ -48,10 +53,10 @@ public class ParticipantResourceAssemblerTest {
      * A self link is also populated. 
    	*/
 	@Test
-	public void testToResource(){
+	public void testToResource() throws ParseException{
 		
-		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", LocalDate.of(1982, 12, 16), 4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", dateFormat.parse("1982-12-16"), 4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
 		ParticipantResource participantResource = participantResourceAssembler.toResource(modelMapper.map(participant, ParticipantDTO.class));				
 		assertThat(participantResource.getLinks().get(0).getHref(),is("/participants/56dffaa6097d9818d8b455a7"));
@@ -69,9 +74,9 @@ public class ParticipantResourceAssemblerTest {
      * A self link is also populated. 
    	*/
 	@Test
-	public void testToResourcesForAParticipant(){
-		final Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SL123457B", LocalDate.now(),4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+	public void testToResourcesForAParticipant() throws ParseException{
+		final Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
 		final List<Participant> participantList = new ArrayList<>();
 		participantList.add(participant);		
@@ -94,11 +99,11 @@ public class ParticipantResourceAssemblerTest {
      * A self link is also populated. 
    	*/
 	@Test
-	public void testToResourcesForAParticipantSingle(){
+	public void testToResourcesForAParticipantSingle() throws ParseException{
 		final ParticipantDTO participant = new ParticipantDTO();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589B");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589B");participant.setDob(dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 
 		List<ParticipantResource> participantResources = participantResourceAssembler.toResourcesForAParticipant(modelMapper,participant,participant.getParticipantId(), "/providers/1111111/participants");
 		assertNotNull(participantResources);
@@ -118,17 +123,17 @@ public class ParticipantResourceAssemblerTest {
      * A self link is also populated. 
    	*/
 	@Test
-	public void testToResourcesForParticipants(){
+	public void testToResourcesForParticipants() throws ParseException{
 		Pageable pageable = new PageRequest(0,1,Direction.ASC,"providerId");
 		
-		final Participant participant1 = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B", LocalDate.of(1982, 12, 16), 4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant1 = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B", dateFormat.parse("1982-12-16"), 4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
-		final Participant participant2 = new Participant.ParticipantBuilder(null, 1111111, "AB196058B", LocalDate.of(1979, 8,7), 4001116)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant2 = new Participant.ParticipantBuilder(null, 1111111, "AB196058B", dateFormat.parse("1979-08-07"), 4001116)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
-		final Participant participant3 = new Participant.ParticipantBuilder(null, 1111111, "SL123457B", LocalDate.of(1991, 5,10),4001112)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant3 = new Participant.ParticipantBuilder(null, 1111111, "SL123457B", dateFormat.parse("1991-05-10"),4001112)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		final List<Participant> participantList = new ArrayList<>();
 		participantList.add(participant1);	participantList.add(participant2);participantList.add(participant3);	

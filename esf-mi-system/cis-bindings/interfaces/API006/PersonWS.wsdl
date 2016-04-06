@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************
+	*     1.0    *  Daniel Dor-Chay   * 29/07/04   * Added CISDate, Field validation on API004
+	*     1.1    *  Daniel Dor-Chay   * 02/08/04   * Added CISTime, Field validation on API006, API008
+	*     1.2    *  Daniel Dor-Chay   * 03/08/04   * Field Validation on API010
+	*     1.3    *  Daniel Dor-Chay   * 12/08/04   * Modified and added Field Validation for API024
+	*     1.4    *  Daniel Dor-Chay   * 18/08/04   * Modified and added Field Validation for API021 Removed two foenames for CDS complinance
+	*     1.5    *  Daniel Dor-Chay   * 19/08/04   * Modfied API026 according to ODS 1.2 and added field validation
+	*     1.6    *  Daniel Dor-Chay   * 1/09/04    * Modified RequestHeader officeLocation is now locationAddress
+	*     1.7    *  Daniel Dor-Chay   * 03/09/04   * Added correction flag to Person Name and PersonNameHist API006
+	*     1.8    *  Daniel Dor-Chay	  * 03/09/04   * Modified getInterests API010 InterestedParty changed
+	*     1.9    *  Daniel Dor-Chay   * 07/09/04   * Modfied API006 Removed titleDesc removed complexType PersonNameHist. API021 & API006 titleID changed to title
+	*     1.10   *  Daniel Dor-Chay   * 08/09/04   * Modified RequestHeader
+	*     1.11   *  Daniel Dor-Chay   * 14/09/04   * Modfied API010 Response
+	*     1.12   *  Shaha Alam        * 16/09/04   * Set InterestedParty attribute in Interest element as non-nillable for maintain interests
+	*     1.13   *  Daniel Dor-Chay   * 22/09/04   * Removed wsfacade schema defined in types and incorporated it into apis schemas
+	*     1.14   * 	Daniel Dor-Chay   * 29/09/04   * Modified API020
+	*     1.15   * 	Alexandre Naressi * 29/09/04   * Modified API021 to correct reqFormOfAddStartTime in RequestedFormOfAddress to CISTime instead of CISDate
+	*     1.16   *  Daniel Dor-Chay   * 13/10/04   * For all DeptID, OfceLocn, BenSys in Get APIs modified response to return decode and contactNo for OfceLocn CR1748
+	*     1.17   *  Daniel Dor-Chay   * 19/10/04   * Modified api008 response to return preferredMethodOfContact ID + Desc 
+	*     1.18   *  Daniel Dor-Chay   * 22/10/04   * Modified some M/O fields on api008, api006, api010, api004
+	*     1.19   *  Daniel Dor-Chay   * 25/10/04   * Modified some api004 to return nino as per FD, modified API020 to IdverificationTypeID to idverificationTypeID, modified api024
+	*     1.20   *  Daniel Dor-Chay   * 29/10/04   * Modified api021 m/o fields on requested form of address
+     *    1.21    * Petri Tuomola       * 24/06/05   * Added documentation to indicate which APIs will be deprecated in Rel2b 
+	*****************************************************************************************************************-->
+<wsdl:definitions xmlns:tns10="http://api024.webservice.cis.dwp.gov.uk" xmlns:tns9="http://api020.webservice.cis.dwp.gov.uk" xmlns:tns8="http://api026.webservice.cis.dwp.gov.uk" xmlns:tns7="http://api004.webservice.cis.dwp.gov.uk" xmlns:tns6="http://api006.webservice.cis.dwp.gov.uk" xmlns:tns5="http://api021.webservice.cis.dwp.gov.uk" xmlns:tns4="http://api010.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" xmlns:tns2="http://api008.webservice.cis.dwp.gov.uk" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://wsfacade.webservice.cis.dwp.gov.uk">
+	<wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd"/>
+	<wsdl:types>
+		<schema elementFormDefault="qualified" targetNamespace="http://api008.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API008_GetContactDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="roleTypeID" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="API008_GetContactDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+					<element maxOccurs="unbounded" name="contactDetails" nillable="true" type="tns2:ContactDetails"/>
+				</sequence>
+			</complexType>
+			<complexType name="ContactDetails">
+				<sequence>
+					<element name="persRoleContactStartDate" nillable="false" type="tns3:CISDate"/>
+					<element name="persRoleContactEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="contactStartDateApplDate" nillable="false" type="tns3:CISDate"/>
+					<element name="contactEndDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="contactTypeID" nillable="false" type="xsd:string"/>
+					<element name="contactTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="contactChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdOfceLocnContactNo" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="contactChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="roleTypeID" nillable="false" type="xsd:string"/>
+					<element name="roleTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="preferredMethodOfContactID" nillable="true" type="xsd:string"/>
+					<element name="preferredMethodOfContactDesc" nillable="true" type="xsd:string"/>
+					<element name="detail" nillable="true" type="xsd:string"/>
+					<element name="contactMediaTypeID" nillable="true" type="xsd:string"/>
+					<element name="contactMediaTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="validTypeID" nillable="true" type="xsd:string"/>
+					<element name="validTypeDesc" nillable="true" type="xsd:string"/>					
+					<element name="status" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="api008_GetContactDetailsRequest" nillable="false" type="tns2:API008_GetContactDetailsRequest"/>
+			<element name="api008_GetContactDetailsResponse" nillable="false" type="tns2:API008_GetContactDetailsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://messaging.common.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<complexType name="RequestHeader">
+				<sequence>
+					<element name="userID" nillable="false" type="xsd:string"/>
+					<element name="userName" nillable="true" type="xsd:string"/>
+					<element name="accessLevel" nillable="false" type="xsd:string"/>
+					<element name="sessionID" nillable="true" type="xsd:string"/>
+					<element name="systemID" nillable="false" type="xsd:string"/>
+					<element name="subSystemID" nillable="true" type="xsd:string"/>
+					<element name="hostName" nillable="false" type="xsd:string"/>
+					<element name="departmentID" nillable="true" type="xsd:string"/>
+					<element name="locationAddress" nillable="false" type="xsd:string"/>
+					<element name="auditFlag" nillable="true" type="xsd:boolean"/>
+					<element name="nationalSensitivityAccess" nillable="false" type="xsd:boolean"/>
+					<element name="officeID" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ResponseHeader">
+				<sequence>
+					<element name="natSensInd" nillable="true" type="xsd:string"/>
+					<element maxOccurs="unbounded" name="mgtChkInd" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="CISFaultDetails">
+				<sequence>
+					<element maxOccurs="unbounded" name="cisErrors" nillable="true" type="tns3:CISError"/>
+					<element name="natSensInd" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="CISError">
+				<sequence>
+					<element name="errorCode" nillable="true" type="xsd:string"/>
+					<element name="errorMessage" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="CISFaultDetails" nillable="true" type="tns3:CISFaultDetails"/>
+			<simpleType name="CISDate">
+				<restriction base="string">
+					<pattern value="([0-9]{2}-[a-zA-Z]{3}-[0-9]{4})|(#empty value)"/>
+				</restriction>
+			</simpleType>
+			<simpleType name="CISTime">
+				<restriction base="string">
+					<pattern value="([0-9]{2}:[0-9]{2}:[0-9]{2})|(#empty value)"/>
+				</restriction>
+			</simpleType>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api010.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API010_GetInterestDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="historyFlag" nillable="true" type="xsd:boolean"/>
+				</sequence>
+			</complexType>
+			<complexType name="API010_GetInterestDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+					<element maxOccurs="unbounded" name="interestDetails" nillable="true" type="tns4:Interest"/>
+				</sequence>
+			</complexType>
+			<complexType name="Interest">
+				<sequence>
+					<element name="businessInterestStartDate" nillable="false" type="tns3:CISDate"/>
+					<element name="interestStartDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="businessInterestEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="interestEndDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="dwpServiceKeyID" nillable="false" type="xsd:string"/>
+					<element name="dwpServiceKeyDesc" nillable="false" type="xsd:string"/>
+					<element name="interestChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdOfceLocnContactNo" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="interestChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="interestsTypeID" nillable="false" type="xsd:string"/>
+					<element name="interestsTypeDesc" nillable="false" type="xsd:string"/>
+					<element maxOccurs="unbounded" name="interestedParties" nillable="true" type="tns4:InterestedParty"/>
+				</sequence>
+			</complexType>
+			<complexType name="InterestedParty">
+				<sequence>
+					<element name="partyTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="partyTypeID" nillable="true" type="xsd:string"/>
+					<element name="startDate" nillable="false" type="tns3:CISDate"/>
+					<element name="partyStartDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="endDate" nillable="true" type="tns3:CISDate"/>
+					<element name="partyEndDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="dwpBenefitKeyID" nillable="false" type="xsd:string"/>
+					<element name="dwpBenefitServiceSystemID" nillable="true" type="xsd:string"/>
+					<element name="dwpBenefitServiceSystemDesc" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdOfceLocnContactNo" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="partyChgMdDeptDesc" nillable="true" type="xsd:string"/>					
+					<element name="sdOfficeCodeNumberID" nillable="false" type="xsd:string"/>
+					<element name="sdOfficeCodeNumberDesc" nillable="false" type="xsd:string"/>
+					<element name="sdOfficeTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="intOfficeTypeID" nillable="false" type="xsd:string"/>
+					<element name="sdOfficeTypeID" nillable="false" type="xsd:string"/>
+					<element name="intOfficeTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="intOfficeContactNo" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="api010_GetInterestDetailsRequest" nillable="false" type="tns4:API010_GetInterestDetailsRequest"/>
+			<element name="api010_GetInterestDetailsResponse" nillable="false" type="tns4:API010_GetInterestDetailsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api021.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API021_UpdateNameDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="personNameDetails" nillable="true" type="tns5:PersonName"/>
+					<element name="reqFormOfAddressDetails" nillable="true" type="tns5:RequestedFormOfAddress"/>
+				</sequence>
+			</complexType>
+			<complexType name="PersonName">
+				<sequence>
+					<element name="nameTypeID" nillable="false" type="xsd:string"/>
+					<element name="title" nillable="true" type="xsd:string"/>
+					<element name="forenames" nillable="true" type="xsd:string"/>
+					<element name="surname" nillable="true" type="xsd:string"/>
+					<element name="nameSuffix" nillable="true" type="xsd:string"/>
+					<element name="nameStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="nameEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedStartTime" nillable="true" type="tns3:CISTime"/>
+					<element name="correctionFlg" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="RequestedFormOfAddress">
+				<sequence>
+					<element name="reqFormOfAddress" nillable="true" type="xsd:string"/>
+					<element name="reqFormOfAddStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="reqFormOfAddStartTime" nillable="true" type="tns3:CISTime"/>
+					<element name="reqFormOfAddEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="correctionFlg" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="API021_UpdateNameDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+				</sequence>
+			</complexType>
+			<element name="api021_UpdateNameDetailsRequest" nillable="false" type="tns5:API021_UpdateNameDetailsRequest"/>
+			<element name="api021_UpdateNameDetailsResponse" nillable="false" type="tns5:API021_UpdateNameDetailsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api006.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API006_GetNameDetailsRequest">
+				<sequence>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="historyFlag" nillable="true" type="xsd:boolean"/>
+				</sequence>
+			</complexType>
+			<complexType name="API006_GetNameDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+					<element maxOccurs="unbounded" name="nameDetails" nillable="false" type="tns6:PersonName"/>
+					<element maxOccurs="unbounded" name="nameDetailsHist" nillable="true" type="tns6:PersonName"/>
+					<element name="reqFormOfAddr" nillable="true" type="tns6:RequestedFormOfAddress"/>
+					<element maxOccurs="unbounded" name="reqFormOfAddrHist" nillable="true" type="tns6:RequestedFormOfAddress"/>
+				</sequence>
+			</complexType>
+			<complexType name="PersonName">
+				<sequence>
+					<element name="title" nillable="true" type="xsd:string"/>
+					<element name="forename" nillable="true" type="xsd:string"/>
+					<element name="surname" nillable="false" type="xsd:string"/>
+					<element name="nameSuffix" nillable="true" type="xsd:string"/>
+					<element name="nameStartDate" nillable="false" type="tns3:CISDate"/>
+					<element name="nameEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="nameStrtDtApplDt" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="nameEndDtApplDt" nillable="true" type="tns3:CISDate"/>
+					<element name="persNameNotifiedStartTime" nillable="true" type="tns3:CISTime"/>
+					<element name="nameChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdOfceLocnContactNo" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="nameChgMdDeptDesc" nillable="true" type="xsd:string"/>	
+					<element name="nameTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="nameTypeID" nillable="false" type="xsd:string"/>
+					<element name="correctionFlg" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="RequestedFormOfAddress">
+				<sequence>
+					<element name="reqFormOfAddress" nillable="false" type="xsd:string"/>
+					<element name="reqFormOfAddStartDate" nillable="false" type="tns3:CISDate"/>
+					<element name="reqAddStartDateApplDate" nillable="false" type="tns3:CISDate"/>
+					<element name="reqFormOfAddStartTime" nillable="true" type="tns3:CISTime"/>
+					<element name="reqFormOfAddEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="reqAddEndDateApplDate" nillable="true" type="tns3:CISDate"/>
+					<element name="reqAddChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdOfceLocnContactNo" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="reqAddChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="correctionFlg" nillable="true" type="xsd:string"/>	
+				</sequence>
+			</complexType>
+			<element name="api006_GetNameDetailsRequest" nillable="false" type="tns6:API006_GetNameDetailsRequest"/>
+			<element name="api006_GetNameDetailsResponse" nillable="false" type="tns6:API006_GetNameDetailsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api004.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API004_GetKnownFactsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="API004_GetKnownFactsResponse">
+				<sequence>
+					<element maxOccurs="unbounded" name="knownFact" nillable="true" type="tns7:KnownFactDetails"/>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+					<element name="nino" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="KnownFactDetails">
+				<sequence>
+					<element name="knownFactTypeID" nillable="false" type="xsd:string"/>
+					<element name="knownFactTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="value" nillable="true" type="xsd:string"/>
+					<element maxOccurs="unbounded" name="channels" nillable="true" type="tns7:Channel"/>
+				</sequence>
+			</complexType>
+			<complexType name="Channel">
+				<sequence>
+					<element name="channelTypeID" nillable="true" type="xsd:string"/>
+					<element name="channelTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="dwpServiceKey" nillable="false" type="xsd:string"/>
+					<element name="dwpServiceDesc" nillable="false" type="xsd:string"/>
+					<element name="startDate" nillable="true" type="tns3:CISDate"/>
+					<element name="endDate" nillable="true" type="tns3:CISDate"/>
+				</sequence>
+			</complexType>
+			<element name="api004_GetKnownFactsRequest" nillable="false" type="tns7:API004_GetKnownFactsRequest"/>
+			<element name="api004_GetKnownFactsResponse" nillable="false" type="tns7:API004_GetKnownFactsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api026.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API026_MaintainInterestsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="interests" nillable="false" type="tns8:Interest"/>
+				</sequence>
+			</complexType>
+			<complexType name="Interest">
+				<sequence>
+					<element name="dwpServiceKeyID" nillable="false" type="xsd:string"/>
+					<element name="interestsTypeID" nillable="true" type="xsd:string"/>
+					<element name="businessInterestStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="businessInterestEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="interestedParty" nillable="false" type="tns8:InterestedParty"/>
+				</sequence>
+			</complexType>
+			<complexType name="InterestedParty">
+				<sequence>
+					<element name="intOfficeTypeID" nillable="true" type="xsd:string"/>
+					<element name="partyTypeID" nillable="true" type="xsd:string"/>
+					<element name="startDate" nillable="true" type="tns3:CISDate"/>
+					<element name="endDate" nillable="true" type="tns3:CISDate"/>
+					<element name="dwpBenefitKeyID" nillable="true" type="xsd:string"/>
+					<element name="dwpBenefitServiceSystemID" nillable="true" type="xsd:string"/>
+					<element name="sdOfficeCodeNumberID" nillable="true" type="xsd:string"/>
+					<element name="sdOfficeTypeID" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="API026_MaintainInterestsResponse">
+				<sequence>
+					<element name="header" nillable="true" type="tns3:ResponseHeader"/>
+				</sequence>
+			</complexType>
+			<element name="api026_MaintainInterestsRequest" nillable="true" type="tns8:API026_MaintainInterestsRequest"/>
+			<element name="api026_MaintainInterestsResponse" nillable="true" type="tns8:API026_MaintainInterestsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api020.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API020_UpdatePersonDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="personDetails" nillable="true" type="tns9:Person"/>
+					<element name="specialNeedsDetails" nillable="true" type="tns9:SpecialNeeds"/>
+				</sequence>
+			</complexType>
+			<complexType name="Person">
+				<sequence>
+					<element name="ethnicOriginTypeID" nillable="true" type="xsd:string"/>
+					<element name="ethnOrgnTpStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="ethnOrgnTpEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="preferredLangTypeID" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="prefLangTpEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="spokenLangTypeID" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="spknLangTpEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="restrictPoInd" nillable="true" type="xsd:string"/>
+					<element name="postOfceStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="postOfceEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="poCode" nillable="true" type="xsd:string"/>
+					<element name="nifuInterestID" nillable="true" type="xsd:string"/>
+					<element name="maritalStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="nationalityTypeID" nillable="true" type="xsd:string"/>
+					<element name="indInterest" nillable="true" type="xsd:string"/>
+					<element name="immigrationReferenceNumber" nillable="true" type="xsd:string"/>
+					<element name="immigrationStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="immigrationStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="immigrationEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="dateOfChange" nillable="true" type="tns3:CISDate"/>
+					<element name="systemOfChange" nillable="true" type="xsd:string"/>
+					<element name="disabilityIndicator" nillable="true" type="xsd:string"/>
+					<element name="disableIndStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="disableIndEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="ninoSuffix" nillable="true" type="xsd:string"/>
+					<element name="ninoStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="ninoUsageStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="ninoVerificationFlgID" nillable="true" type="xsd:string"/>
+					<element name="idVerificationTypeID" nillable="true" type="xsd:string"/>
+					<element name="birthDate" nillable="true" type="tns3:CISDate"/>
+					<element name="bthDtStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="birthDateTypeID" nillable="true" type="xsd:string"/>
+					<element name="birthDateVerificationFlagID" nillable="true" type="xsd:string"/>
+					<element name="sex" nillable="true" type="xsd:string"/>
+					<element name="sexStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="sexEndDate" nillable="true" type="tns3:CISDate"/>
+					<element name="deathDate" nillable="true" type="tns3:CISDate"/>
+					<element name="dthDtStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="deathDateVerificationFlagID" nillable="true" type="xsd:string"/>
+					<element name="potentViolTypeID" nillable="true" type="xsd:string"/>
+					<element name="potlViolTpStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="potlViolTpEndDt" nillable="true" type="tns3:CISDate"/>
+					<element name="natSensRecTypeID" nillable="true" type="xsd:string"/>
+					<element name="natSensRecStartDt" nillable="true" type="tns3:CISDate"/>
+					<element name="natSensRecEndDt" nillable="true" type="tns3:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="SpecialNeeds">
+				<sequence>
+					<element name="needsTypeID" nillable="false" type="xsd:string"/>
+					<element name="startDate" nillable="true" type="tns3:CISDate"/>
+					<element name="endDate" nillable="true" type="tns3:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="API020_UpdatePersonDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader"/>
+				</sequence>
+			</complexType>
+			<element name="api020_UpdatePersonDetailsRequest" nillable="false" type="tns9:API020_UpdatePersonDetailsRequest"/>
+			<element name="api020_UpdatePersonDetailsResponse" nillable="false" type="tns9:API020_UpdatePersonDetailsResponse"/>
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api024.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk"/>
+			<complexType name="API024_UpdateContactDetailsRequest">
+				<sequence>
+					<element name="header" nillable="true" type="tns3:RequestHeader"/>
+					<element name="nino" nillable="true" type="xsd:string"/>
+					<element name="personRole" nillable="true" type="tns10:PersonRole"/>
+					<element name="personRoleContact" nillable="true" type="tns10:PersonRoleContact"/>
+					<element name="contactDetails" nillable="true" type="tns10:ContactDetails"/>
+				</sequence>
+			</complexType>
+			<complexType name="PersonRole">
+				<sequence>
+					<element name="roleTypeID" nillable="true" type="xsd:string"/>
+					<element name="preferredMethodOfContactID" nillable="true" type="xsd:string"/> 
+				</sequence>
+			</complexType>
+			<complexType name="PersonRoleContact">
+				<sequence>
+					<element name="contactTypeID" nillable="true" type="xsd:string"/>
+					<element name="perRoleContStartDate" nillable="true" type="tns3:CISDate"/>
+					<element name="perRoleContEndDate" nillable="true" type="tns3:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="ContactDetails">
+				<sequence>
+					<element name="detail" nillable="true" type="xsd:string"/>
+					<element name="validTypeID" nillable="true" type="xsd:string"/>
+					<element name="contactStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="contactMediaTypeID" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="API024_UpdateContactDetailsResponse">
+				<sequence>
+					<element name="header" nillable="true" type="tns3:ResponseHeader"/>
+				</sequence>
+			</complexType>
+			<element name="api024_UpdateContactDetailsRequest" nillable="true" type="tns10:API024_UpdateContactDetailsRequest"/>
+			<element name="api024_UpdateContactDetailsResponse" nillable="true" type="tns10:API024_UpdateContactDetailsResponse"/>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="api008_GetContactDetailsRequest">
+		<wsdl:part name="parameters" element="tns2:api008_GetContactDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api020_UpdatePersonDetailsResponse">
+		<wsdl:part name="parameters" element="tns9:api020_UpdatePersonDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api010_GetInterestDetailsResponse">
+		<wsdl:part name="parameters" element="tns4:api010_GetInterestDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api021_UpdateNameDetailsRequest">
+		<wsdl:part name="parameters" element="tns5:api021_UpdateNameDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api021_UpdateNameDetailsResponse">
+		<wsdl:part name="parameters" element="tns5:api021_UpdateNameDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api020_UpdatePersonDetailsRequest">
+		<wsdl:part name="parameters" element="tns9:api020_UpdatePersonDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api004_GetKnownFactsResponse">
+		<wsdl:part name="parameters" element="tns7:api004_GetKnownFactsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api026_MaintainInterestsResponse">
+		<wsdl:part name="parameters" element="tns8:api026_MaintainInterestsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api026_MaintainInterestsRequest">
+		<wsdl:part name="parameters" element="tns8:api026_MaintainInterestsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api004_GetKnownFactsRequest">
+		<wsdl:part name="parameters" element="tns7:api004_GetKnownFactsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="CISFaultDetails">
+		<wsdl:part name="fault" element="tns3:CISFaultDetails"/>
+	</wsdl:message>
+	<wsdl:message name="api006_GetNameDetailsResponse">
+		<wsdl:part name="parameters" element="tns6:api006_GetNameDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api006_GetNameDetailsRequest">
+		<wsdl:part name="parameters" element="tns6:api006_GetNameDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api008_GetContactDetailsResponse">
+		<wsdl:part name="parameters" element="tns2:api008_GetContactDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api024_UpdateContactDetailsRequest">
+		<wsdl:part name="parameters" element="tns10:api024_UpdateContactDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api024_UpdateContactDetailsResponse">
+		<wsdl:part name="parameters" element="tns10:api024_UpdateContactDetailsResponse"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:message name="api010_GetInterestDetailsRequest">
+		<wsdl:part name="parameters" element="tns4:api010_GetInterestDetailsRequest"/>
+		<wsdl:part name="ibheader" element="header:IBHeader"/>
+	</wsdl:message>
+	<wsdl:portType name="PersonWS">
+		<wsdl:operation name="api008_GetContactDetails">
+			<wsdl:input name="api008_GetContactDetailsRequest" message="impl:api008_GetContactDetailsRequest"/>
+			<wsdl:output name="api008_GetContactDetailsResponse" message="impl:api008_GetContactDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api010_GetInterestDetails">
+			<wsdl:input name="api010_GetInterestDetailsRequest" message="impl:api010_GetInterestDetailsRequest"/>
+			<wsdl:output name="api010_GetInterestDetailsResponse" message="impl:api010_GetInterestDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api021_UpdateNameDetails">
+			<wsdl:input name="api021_UpdateNameDetailsRequest" message="impl:api021_UpdateNameDetailsRequest"/>
+			<wsdl:output name="api021_UpdateNameDetailsResponse" message="impl:api021_UpdateNameDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api006_GetNameDetails">
+			<wsdl:input name="api006_GetNameDetailsRequest" message="impl:api006_GetNameDetailsRequest"/>
+			<wsdl:output name="api006_GetNameDetailsResponse" message="impl:api006_GetNameDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api004_GetKnownFacts">
+			<wsdl:input name="api004_GetKnownFactsRequest" message="impl:api004_GetKnownFactsRequest"/>
+			<wsdl:output name="api004_GetKnownFactsResponse" message="impl:api004_GetKnownFactsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api026_MaintainInterests">
+			<wsdl:documentation>
+						This operation will be superseded by CorporateCISMaintainInterestDetailsWS in CIS Rel2b. The operation declared here 
+						is NOT being retained. It will cease to operate at time of CIS Rel2b go-live.
+			</wsdl:documentation>				
+			<wsdl:input name="api026_MaintainInterestsRequest" message="impl:api026_MaintainInterestsRequest"/>
+			<wsdl:output name="api026_MaintainInterestsResponse" message="impl:api026_MaintainInterestsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api020_UpdatePersonDetails">
+			<wsdl:documentation>
+						This operation will be superseded by CorporateCISUpdatePersonWS02 in CIS Rel2b. The operation declared here 
+						is NOT being retained. It will cease to operate at time of CIS Rel2b go-live.
+			</wsdl:documentation>			
+			<wsdl:input name="api020_UpdatePersonDetailsRequest" message="impl:api020_UpdatePersonDetailsRequest"/>
+			<wsdl:output name="api020_UpdatePersonDetailsResponse" message="impl:api020_UpdatePersonDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+		<wsdl:operation name="api024_UpdateContactDetails">
+			<wsdl:input name="api024_UpdateContactDetailsRequest" message="impl:api024_UpdateContactDetailsRequest"/>
+			<wsdl:output name="api024_UpdateContactDetailsResponse" message="impl:api024_UpdateContactDetailsResponse"/>
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PersonWSSoapBinding" type="impl:PersonWS">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="api008_GetContactDetails">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api008_GetContactDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api008_GetContactDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api010_GetInterestDetails">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api010_GetInterestDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api010_GetInterestDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api021_UpdateNameDetails">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api021_UpdateNameDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api021_UpdateNameDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api006_GetNameDetails">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api006_GetNameDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api006_GetNameDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api004_GetKnownFacts">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api004_GetKnownFactsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api004_GetKnownFactsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api026_MaintainInterests">
+			<wsdl:documentation>
+						This operation will be superseded by CorporateCISMaintainInterestDetailsWS in CIS Rel2b. The operation declared here 
+						is NOT being retained. It will cease to operate at time of CIS Rel2b go-live.
+			</wsdl:documentation>				
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api026_MaintainInterestsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api026_MaintainInterestsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api020_UpdatePersonDetails">
+			<wsdl:documentation>
+						This operation will be superseded by CorporateCISUpdatePersonWS02 in CIS Rel2b. The operation declared here 
+						is NOT being retained. It will cease to operate at time of CIS Rel2b go-live.
+			</wsdl:documentation>			
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api020_UpdatePersonDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api020_UpdatePersonDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="api024_UpdateContactDetails">
+			<wsdlsoap:operation/>
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api024_UpdateContactDetailsRequest" part="ibheader" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal"/>
+				<wsdlsoap:header message="impl:api024_UpdateContactDetailsResponse" part="ibheader" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PersonWSService">
+		<wsdl:port name="PersonWS" binding="impl:PersonWSSoapBinding">
+			<wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/PersonWS"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

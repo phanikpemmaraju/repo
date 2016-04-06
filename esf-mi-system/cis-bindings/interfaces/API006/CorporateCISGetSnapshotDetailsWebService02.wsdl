@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+xmlns:tns11="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" 
+xmlns:tns10="http://api006.webservice.cis.dwp.gov.uk" 
+xmlns:tns9="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.0/API007_GetAddressDetails" 
+xmlns:tns8="http://api008.webservice.cis.dwp.gov.uk"
+ xmlns:tns7="http://api010.webservice.cis.dwp.gov.uk"
+ xmlns:tns6="http://api009.webservice.cis.dwp.gov.uk" 
+ xmlns:tns5="http://api013.webservice.cis.dwp.gov.uk"
+  xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" 
+  xmlns:tns1="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0/API005_GetSnapshotDetails" 
+  xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" 
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+  xmlns:impl="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+   xmlns:intf="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0" 
+   xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+   targetNamespace="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0">
+	<wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd" />
+	<wsdl:types>
+		<schema elementFormDefault="qualified" 
+		targetNamespace="http://messaging.common.cis.dwp.gov.uk" 
+		xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" 
+		xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" 
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<complexType name="RequestHeader">
+				<sequence>
+					<element name="userID" nillable="false" type="xsd:string" />
+					<element name="userName" nillable="true" type="xsd:string" />
+					<element name="accessLevel" nillable="false" type="xsd:string" />
+					<element name="sessionID" nillable="true" type="xsd:string" />
+					<element name="systemID" nillable="false" type="xsd:string" />
+					<element name="subSystemID" nillable="true" type="xsd:string" />
+					<element name="hostName" nillable="false" type="xsd:string" />
+					<element name="departmentID" nillable="true" type="xsd:string" />
+					<element name="locationAddress" nillable="false" type="xsd:string" />
+					<element name="auditFlag" nillable="true" type="xsd:boolean" />
+					<element name="nationalSensitivityAccess" nillable="false" type="xsd:boolean" />
+					<element name="officeID" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="ResponseHeader">
+				<sequence>
+					<element name="natSensInd" nillable="true" type="xsd:string" />
+					<element maxOccurs="unbounded" name="mgtChkInd" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="CISFaultDetails">
+				<sequence>
+					<element maxOccurs="unbounded" name="cisErrors" nillable="true" type="tns3:CISError" />
+					<element name="natSensInd" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="CISError">
+				<sequence>
+					<element name="errorCode" nillable="true" type="xsd:string" />
+					<element name="errorMessage" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<element name="CISFaultDetails" nillable="true" type="tns3:CISFaultDetails" />
+			<simpleType name="CISDate">
+				<restriction base="string">
+					<pattern value="([0-9]{2}-[a-zA-Z]{3}-[0-9]{4})|(#empty value)" />
+				</restriction>
+			</simpleType>
+			<simpleType name="CISTime">
+				<restriction base="string">
+					<pattern value="([0-9]{2}:[0-9]{2}:[0-9]{2})|(#empty value)" />
+				</restriction>
+			</simpleType>
+		</schema>
+		<schema elementFormDefault="qualified" 
+		targetNamespace="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0/API005_GetSnapshotDetails" 
+		xmlns:tns11="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" 
+		xmlns:tns10="http://api006.webservice.cis.dwp.gov.uk" 
+		xmlns:tns9="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.0/API007_GetAddressDetails" 
+	    xmlns:tns5="http://api013.webservice.cis.dwp.gov.uk" 
+		xmlns:tns6="http://api009.webservice.cis.dwp.gov.uk" 
+		xmlns:tns7="http://api010.webservice.cis.dwp.gov.uk" 
+		xmlns:tns8="http://api008.webservice.cis.dwp.gov.uk" 
+		xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:impl="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0" 
+		xmlns:intf="http://dwp.gov.uk/Common/CIS/GetSnapshotDetails/Service/2.0" 
+		xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">		
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" schemaLocation="CorporateCISGetPerson02.1.xsd"/>
+			<import namespace="http://api013.webservice.cis.dwp.gov.uk" />
+			<import namespace="http://api009.webservice.cis.dwp.gov.uk" />
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.0/API007_GetAddressDetails"  schemaLocation="GetAddressDetails.xsd" />
+			<import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd" />		
+			<import namespace="http://api010.webservice.cis.dwp.gov.uk" />
+			<import namespace="http://api008.webservice.cis.dwp.gov.uk" />
+			<import namespace="http://api006.webservice.cis.dwp.gov.uk" /> 
+			<complexType name="API005_GetSnapshotDetailsRequest">
+				<sequence>
+					<element name="nino" nillable="true" type="xsd:string" />
+					<element name="header" nillable="true" type="ciscommon:RequestHeader" />
+				</sequence>
+			</complexType>
+			<complexType name="API005_GetSnapshotDetailsResponse">
+				<sequence>
+					<element name="header" nillable="true" type="ciscommon:ResponseHeader" />
+					<element maxOccurs="unbounded" name="nameDetails" nillable="false" type="tns10:PersonName" />
+					<element name="requestedFormOfAddress" nillable="true" type="tns10:RequestedFormOfAddress" />
+					<element minOccurs="0" maxOccurs="unbounded" name="contactDetails" nillable="false" type="tns8:ContactDetails" />
+					<element minOccurs="0" maxOccurs="unbounded" name="interestDetails" nillable="false" type="tns7:Interest" />
+					<element minOccurs="0" maxOccurs="unbounded" name="personRoleRelationships" nillable="false" type="tns6:PersonRoleRelationship" />
+					<element minOccurs="0" maxOccurs="unbounded" name="orgRoleRelationships" nillable="false" type="tns6:OrgPersonRoleRelationship" />
+					<element minOccurs="0" maxOccurs="unbounded" name="awardDetails" nillable="false" type="tns5:PersonRoleServiceAssmt" />
+					<element name="personDetailsHist" nillable="true" type="tns11:PersonHist" />
+					<element name="personDetails" nillable="false" type="tns11:Person" />
+					<element minOccurs="0" maxOccurs="unbounded" name="specialNeeds" nillable="false" type="tns11:SpecialNeeds" />	
+					<element minOccurs="0" maxOccurs="unbounded" name="formerNinos" nillable="false" type="tns11:PersonSupNino" />
+					<element name="supersedingNino" nillable="true" type="tns11:PersonSupNino" />
+					<element minOccurs="0" maxOccurs="unbounded" name="addressDetails" nillable="false" type="tns9:AddressDetails" />
+				</sequence>
+			</complexType>
+			<element name="getSnapshotDetailsRequest" nillable="true" type="tns1:API005_GetSnapshotDetailsRequest" />
+			<element name="getSnapshotDetailsResponse" nillable="true" type="tns1:API005_GetSnapshotDetailsResponse" />
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api009.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk" />
+			<complexType name="API009_GetRelationshipDetailsRequest">
+				<sequence>
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="header" nillable="false" type="tns3:RequestHeader" />
+					<element name="historyFlag" nillable="true" type="xsd:boolean" />
+					<element name="roleTypeID" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="API009_GetRelationshipDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader" />
+					<element maxOccurs="unbounded" name="personRoleRelationships" nillable="true" type="tns6:PersonRoleRelationship" />
+					<element maxOccurs="unbounded" name="orgRoleRelationships" nillable="true" type="tns6:OrgPersonRoleRelationship" />
+				</sequence>
+			</complexType>
+			<complexType name="PersonRoleRelationship">
+				<sequence>
+					<element maxOccurs="unbounded" name="personName" nillable="true" type="tns6:PersonName" />
+					<element name="nino" nillable="true" type="xsd:string" />
+					<element name="unmatchedNino" nillable="true" type="xsd:string" />
+					<element name="ninoSuffix" nillable="true" type="xsd:string" />
+					<element name="birthDate" nillable="true" type="tns3:CISDate" />
+					<element name="birthDateVerificationFlgID" nillable="true" type="xsd:string" />
+					<element name="birthDateVerificationFlgDesc" nillable="true" type="xsd:string" />
+					<element name="sex" nillable="true" type="xsd:string" />
+					<element name="deathDate" nillable="true" type="tns3:CISDate" />
+					<element name="deathDateVerificationFlgID" nillable="true" type="xsd:string" />
+					<element name="deathDateVerificationFlgDesc" nillable="true" type="xsd:string" />
+					<element name="restrictPOInd" nillable="true" type="xsd:string" />
+					<element name="nifuInterestID" nillable="true" type="xsd:string" />
+					<element name="nifuInterestDesc" nillable="true" type="xsd:string" />
+					<element name="indInterest" nillable="true" type="xsd:string" />
+					<element name="immigrationStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="dateOfChange" nillable="true" type="tns3:CISDate" />
+					<element name="systemOfChange" nillable="true" type="xsd:string" />
+					<element name="disabilityIndicatorID" nillable="true" type="xsd:string" />
+					<element name="disabilityIndicatorDesc" nillable="true" type="xsd:string" />
+					<element name="roleRelationshipTypeID" nillable="false" type="xsd:string" />
+					<element name="roleRelationshipTypeDesc" nillable="false" type="xsd:string" />
+					<element name="relStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="relStartDateApplDate" nillable="false" type="tns3:CISDate" />
+					<element name="relEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="relEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="relEndReasonID" nillable="true" type="xsd:string" />
+					<element name="relEndReasonDesc" nillable="true" type="xsd:string" />
+					<element name="personRelStatusTypeID" nillable="true" type="xsd:string" />
+					<element name="personRelStatusTypeDesc" nillable="true" type="xsd:string" />
+					<element name="verificationTypeID" nillable="true" type="xsd:string" />
+					<element name="verificationTypeDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="relChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="relChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="relDWPServiceKey" nillable="true" type="xsd:string" />
+					<element name="relDWPServiceKeyDesc" nillable="true" type="xsd:string" />
+					<element name="targetRoleTypeID" nillable="false" type="xsd:string" />
+					<element name="targetRoleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="sourceRoleTypeID" nillable="false" type="xsd:string" />
+					<element name="sourceRoleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="preferredMethodOfContactID" nillable="true" type="xsd:string" />
+					<element name="preferredMethodOfContactDesc" nillable="true" type="xsd:string" />
+					<element name="unreconciledAccountFlag" nillable="false" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="PersonName">
+				<sequence>
+					<element name="nameTypeID" nillable="true" type="xsd:string" />
+					<element name="nameTypeDesc" nillable="true" type="xsd:string" />
+					<element name="title" nillable="true" type="xsd:string" />
+					<element name="forenames" nillable="true" type="xsd:string" />
+					<element name="surname" nillable="true" type="xsd:string" />
+					<element name="persNameNotifiedStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="persNameNotifiedEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="persNameNotifiedStartTime" nillable="true" type="tns3:CISTime" />
+				</sequence>
+			</complexType>
+			<complexType name="OrgPersonRoleRelationship">
+				<sequence>
+					<element name="unmatchedOrgReference" nillable="true" type="xsd:string" />
+					<element name="orgReference" nillable="true" type="xsd:string" />
+					<element name="orgCreationDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgIDChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="orgIDChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="orgName" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgNameChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="orgNameChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="orgStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgIDStartDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgIDEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="orgRoleTypeID" nillable="false" type="xsd:string" />
+					<element name="orgRoleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="roleRelationshipTypeID" nillable="false" type="xsd:string" />
+					<element name="roleRelationshipTypeDesc" nillable="false" type="xsd:string" />
+					<element name="relStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="relEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="relStartDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="relEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="relEndReason" nillable="true" type="xsd:string" />
+					<element name="relChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="relChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="relChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="relChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="relDWPServiceKey" nillable="true" type="xsd:string" />
+					<element name="relDWPServiceKeyDesc" nillable="true" type="xsd:string" />
+					<element name="personRoleTypeID" nillable="false" type="xsd:string" />
+					<element name="personRoleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="unreconciledAccountFlag" nillable="false" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<element name="api009_GetRelationshipDetailsRequest" nillable="false" type="tns6:API009_GetRelationshipDetailsRequest" />
+			<element name="api009_GetRelationshipDetailsResponse" nillable="false" type="tns6:API009_GetRelationshipDetailsResponse" />
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api013.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk" />
+			<complexType name="API013_GetShortAwardHistoryRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader" />
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="dwpServiceKey" nillable="true" type="xsd:string" />
+					<element name="historyFlag" nillable="true" type="xsd:boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="API013_GetShortAwardHistoryResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader" />
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element maxOccurs="unbounded" name="personRoleServiceAssmts" nillable="true" type="tns5:PersonRoleServiceAssmt" />
+				</sequence>
+			</complexType>
+			<complexType name="PersonRoleServiceAssmt">
+				<sequence>
+					<element name="assessmentKey" nillable="false" type="xsd:string" />
+					<element name="roleTypeID" nillable="false" type="xsd:string" />
+					<element name="roleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="dwpServiceKeyID" nillable="false" type="xsd:string" />
+					<element name="dwpServiceKeyDesc" nillable="false" type="xsd:string" />
+					<element name="dwpServiceSystemNameID" nillable="false" type="xsd:string" />
+					<element name="dwpServiceSystemNameDesc" nillable="false" type="xsd:string" />
+					<element name="claimDate" nillable="true" type="tns3:CISDate" />
+					<element name="claimStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="claimReceiptDate" nillable="true" type="tns3:CISDate" />
+					<element name="entitlementStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="claimStatusTypeID" nillable="true" type="xsd:string" />
+					<element name="claimStatusTypeDesc" nillable="true" type="xsd:string" />
+					<element name="claimEndReasonID" nillable="true" type="xsd:string" />
+					<element name="claimEndReasonDesc" nillable="true" type="xsd:string" />
+					<element name="caseReviewDate" nillable="true" type="tns3:CISDate" />
+					<element name="dwpDecisionDate" nillable="true" type="tns3:CISDate" />
+					<element name="dwpDecisionEffectiveDate" nillable="true" type="tns3:CISDate" />
+					<element name="dwpDecisionTime" nillable="true" type="tns3:CISTime" />
+					<element name="dwpDecisionTypeID" nillable="true" type="xsd:string" />
+					<element name="dwpDecisionTypeDesc" nillable="true" type="xsd:string" />
+					<element name="dwpDecnPeriodicReviewTypeID" nillable="true" type="xsd:string" />
+					<element name="dwpDecnPeriodicReviewTypeDesc" nillable="true" type="xsd:string" />
+					<element name="decnPeriodicCaseRevDate" nillable="true" type="tns3:CISDate" />
+					<element name="decnAipStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="removalIndicatorID" nillable="true" type="xsd:string" />
+					<element name="removalIndicatorDesc" nillable="true" type="xsd:string" />
+					<element name="removalDate" nillable="true" type="tns3:CISDate" />
+					<element name="decisionNo" nillable="true" type="xsd:string" />
+					<element name="serviceAssessTypeID" nillable="true" type="xsd:string" />
+					<element name="serviceAssessTypeDesc" nillable="true" type="xsd:string" />
+					<element name="assessStatusTypeID" nillable="true" type="xsd:string" />
+					<element name="assessStatusTypeDesc" nillable="true" type="xsd:string" />
+					<element name="assessStatusReasonTypeID" nillable="true" type="xsd:string" />
+					<element name="assessStatusReasonTypeDesc" nillable="true" type="xsd:string" />
+					<element name="assessmentEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="periodicityTypeID" nillable="true" type="xsd:string" />
+					<element name="periodicityTypeDesc" nillable="true" type="xsd:string" />
+					<element name="paydayTypeID" nillable="true" type="xsd:string" />
+					<element name="paydayTypeDesc" nillable="true" type="xsd:string" />
+					<element name="uomTypeID" nillable="true" type="xsd:string" />
+					<element name="uomTypeDesc" nillable="true" type="xsd:string" />
+					<element name="sourceSystemDateStamp" nillable="true" type="tns3:CISDate" />
+					<element name="sourceSystemTimeStamp" nillable="true" type="tns3:CISTime" />
+					<element name="cisDateStamp" nillable="true" type="tns3:CISDate" />
+					<element name="cisTimeStamp" nillable="true" type="tns3:CISTime" />
+					<element name="reInstatedInd" nillable="true" type="xsd:string" />
+					<element name="compDsbtyCodeID" nillable="true" type="xsd:string" />
+					<element name="compDsbtyCodeDesc" nillable="true" type="xsd:string" />
+					<element name="mobCompDsbtyCodeID" nillable="true" type="xsd:string" />
+					<element name="mobCompDsbtyCodeDesc" nillable="true" type="xsd:string" />
+					<element maxOccurs="unbounded" name="assmntExtraData" nillable="true" type="tns5:AssmntExtraData" />
+					<element maxOccurs="unbounded" name="paymentStatus" nillable="true" type="tns5:PaymentStatus" />
+					<element maxOccurs="unbounded" name="personRoleServiceAward" nillable="true" type="tns5:PersonRoleServiceAward" />
+				</sequence>
+			</complexType>
+			<complexType name="AssmntExtraData">
+				<sequence>
+					<element name="assmntSeqNo" nillable="false" type="xsd:string" />
+					<element name="clmClrnceActnInd" nillable="true" type="xsd:string" />
+					<element name="clmClrnceDt" nillable="true" type="tns3:CISDate" />
+					<element name="dpQualBenID" nillable="true" type="xsd:string" />
+					<element name="dpQualBenDesc" nillable="true" type="xsd:string" />
+					<element name="dpQualBenEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="arrearsPymtInd" nillable="true" type="xsd:string" />
+					<element name="olapBenCodeID" nillable="true" type="xsd:string" />
+					<element name="olapBenCodeDesc" nillable="true" type="xsd:string" />
+					<element name="olapBenRate" nillable="true" type="xsd:string" />
+					<element name="olapNxtBenRate" nillable="true" type="xsd:string" />
+					<element name="olapBenUprateDayID" nillable="true" type="xsd:string" />
+					<element name="olapBenUprateDayDesc" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenCodeID" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenCodeDesc" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenRate" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenNxtRate" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenUprateDayID" nillable="true" type="xsd:string" />
+					<element name="adiOlapBenUprateDayDesc" nillable="true" type="xsd:string" />
+					<element name="cdiOlapInd" nillable="true" type="xsd:string" />
+					<element name="adiInPatientInd" nillable="true" type="xsd:string" />
+					<element name="recoveryCode1ID" nillable="true" type="xsd:string" />
+					<element name="recoveryCode1Desc" nillable="true" type="xsd:string" />
+					<element name="recoveryCode2ID" nillable="true" type="xsd:string" />
+					<element name="recoveryCode2Desc" nillable="true" type="xsd:string" />
+					<element name="recoveryRate1" nillable="true" type="xsd:string" />
+					<element name="recoveryRate2" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="PaymentStatus">
+				<sequence>
+					<element name="dwpServiceKeyID" nillable="false" type="xsd:string" />
+					<element name="dwpServiceKeyDesc" nillable="false" type="xsd:string" />
+					<element name="pymtStatusStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="pymtStatusEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="pymtStatusTypeID" nillable="true" type="xsd:string" />
+					<element name="pymtStatusTypeDesc" nillable="true" type="xsd:string" />
+					<element name="pymtStatusSubTypeID" nillable="true" type="xsd:string" />
+					<element name="pymtStatusSubTypeDesc" nillable="true" type="xsd:string" />
+					<element name="pymtSuspReasonID" nillable="true" type="xsd:string" />
+					<element name="pymtSuspReasonDesc" nillable="true" type="xsd:string" />
+					<element maxOccurs="unbounded" nillable="true" name="pymtStatusComponents" type="tns5:PymtStatusComponent" />
+				</sequence>
+			</complexType>
+			<complexType name="PymtStatusComponent">
+				<sequence>
+					<element name="pymtStatusCompSeq" nillable="false" type="xsd:string" />
+					<element name="adultIndVal" nillable="true" type="xsd:string" />
+					<element name="childIndVal" nillable="true" type="xsd:string" />
+					<element name="stopDate" nillable="true" type="tns3:CISDate" />
+				</sequence>
+			</complexType>
+			<complexType name="PersonRoleServiceAward">
+				<sequence>
+					<element name="awardKey" nillable="false" type="xsd:string" />
+					<element name="dwpDecisionTypeID" nillable="true" type="xsd:string" />
+					<element name="dwpDecisionTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awardStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="awardEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardEndReasonTypeID" nillable="true" type="xsd:string" />
+					<element name="awardEndReasonTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awardSanctionTypeID" nillable="true" type="xsd:string" />
+					<element name="awardSanctionTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awardCalcDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardCalcTypeID" nillable="true" type="xsd:string" />
+					<element name="awardCalcTypeDesc" nillable="true" type="xsd:string" />
+					<element name="serviceAssessTypeID" nillable="true" type="xsd:string" />
+					<element name="serviceAssessTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awardStatusTypeID" nillable="false" type="xsd:string" />
+					<element name="awardStatusTypeDesc" nillable="false" type="xsd:string" />
+					<element name="awardAmount" nillable="true" type="xsd:string" />
+					<element name="calculatedAmount" nillable="true" type="xsd:string" />
+					<element name="uomTypeID" nillable="true" type="xsd:string" />
+					<element name="uomTypeDesc" nillable="true" type="xsd:string" />
+					<element name="periodicityTypeID" nillable="true" type="xsd:string" />
+					<element name="periodicityTypeDesc" nillable="true" type="xsd:string" />
+					<element name="paydayTypeID" nillable="false" type="xsd:string" />
+					<element name="paydayTypeDesc" nillable="false" type="xsd:string" />
+					<element name="jointClaimIndicatorTypeID" nillable="true" type="xsd:string" />
+					<element name="jointClaimIndicatorTypeDesc" nillable="true" type="xsd:string" />
+					<element name="excessIncomeOverReq" nillable="true" type="xsd:string" />
+					<element name="pensionCreditQualIncome" nillable="true" type="xsd:string" />
+					<element name="guarCredNonEntitlRsnID" nillable="true" type="xsd:string" />
+					<element name="guarCredNonEntitlRsnDesc" nillable="true" type="xsd:string" />
+					<element name="savsCredNonEntitlRsnID" nillable="true" type="xsd:string" />
+					<element name="savsCredNonEntitlRsnDesc" nillable="true" type="xsd:string" />
+					<element name="upratingFlg" nillable="true" type="xsd:string" />
+					<element name="awardFreezingDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardUnfreezingDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardUpratingYear" nillable="true" type="tns3:CISDate" />
+					<element name="totDlaMobilityAmt" nillable="true" type="xsd:string" />
+					<element name="totDlaCareAmt" nillable="true" type="xsd:string" />
+					<element name="totalAaAmount" nillable="true" type="xsd:string" />
+					<element name="totalPayableRate" nillable="true" type="xsd:string" />
+					<element name="totalNegAdjustments" nillable="true" type="xsd:string" />
+					<element name="totalPosAdjustments" nillable="true" type="xsd:string" />
+					<element name="totalEntitlement" nillable="true" type="xsd:string" />
+					<element name="totalDepIncrease" nillable="true" type="xsd:string" />
+					<element name="tpeAmt" nillable="true" type="xsd:string" />
+					<element name="compPymtWthhldAmt" nillable="true" type="xsd:string" />
+					<element name="decisionNumber" nillable="true" type="xsd:string" />
+					<element name="benefitCategory" nillable="true" type="xsd:string" />
+					<element name="olapBenCodeID" nillable="true" type="xsd:string" />
+					<element name="olapBenCodeDesc" nillable="true" type="xsd:string" />
+					<element name="pensionCreditStatsSymbolID" nillable="true" type="xsd:string" />
+					<element name="pensionCreditStatsSymbolDesc" nillable="true" type="xsd:string" />
+					<element name="niCreditEligibilityFlag" nillable="true" type="xsd:string" />
+					<element name="persBenTypeID" nillable="false" type="xsd:string" />
+					<element name="persBenTypeDesc" nillable="false" type="xsd:string" />
+					<element name="awardTypeID" nillable="true" type="xsd:string" />
+					<element name="awardTypeDesc" nillable="true" type="xsd:string" />
+					<element maxOccurs="unbounded" name="awardComponent" nillable="true" type="tns5:AwardComponent" />
+				</sequence>
+			</complexType>
+			<complexType name="AwardComponent">
+				<sequence>
+					<element name="awardComponentKey" nillable="false" type="xsd:string" />
+					<element name="componentTypeID" nillable="false" type="xsd:string" />
+					<element name="componentTypeDesc" nillable="false" type="xsd:string" />
+					<element name="sacTypeID" nillable="false" type="xsd:string" />
+					<element name="sacTypeDesc" nillable="false" type="xsd:string" />
+					<element name="sacTypeStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="sacTypeEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="mobSacTypeID" nillable="true" type="xsd:string" />
+					<element name="mobSacTypeDesc" nillable="true" type="xsd:string" />
+					<element name="mobSacTypeStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="mobSacTypeEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardDepTypeID" nillable="true" type="xsd:string" />
+					<element name="awardDepTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awardDepStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="awardDepEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="awdRelPersNino" nillable="true" type="xsd:string" />
+					<element name="jntClmNino" nillable="true" type="xsd:string" />
+					<element name="jntClmInitNino" nillable="true" type="xsd:string" />
+					<element name="cmpntAwdAmnt" nillable="true" type="xsd:string" />
+					<element name="cmpntAwdRate" nillable="true" type="xsd:string" />
+					<element name="depPrfNumerator" nillable="true" type="xsd:string" />
+					<element name="depPrfDenominator" nillable="true" type="xsd:string" />
+					<element name="depAmount" nillable="true" type="xsd:string" />
+					<element name="depTheoreticalAmt" nillable="true" type="xsd:string" />
+					<element name="uomTypeID" nillable="true" type="xsd:string" />
+					<element name="uomTypeDesc" nillable="true" type="xsd:string" />
+					<element name="clericalAdjustment" nillable="true" type="xsd:string" />
+					<element name="othrBnftCmpntServID" nillable="true" type="xsd:string" />
+					<element name="othrBnftCmpntServDesc" nillable="true" type="xsd:string" />
+					<element name="othrBnftCmpntTpID" nillable="true" type="xsd:string" />
+					<element name="othrBnftCmpntTpDesc" nillable="true" type="xsd:string" />
+					<element name="awdCompAdjTypeID" nillable="true" type="xsd:string" />
+					<element name="awdCompAdjTypeDesc" nillable="true" type="xsd:string" />
+					<element name="awdCompAdjSubTypeID" nillable="true" type="xsd:string" />
+					<element name="awdCompAdjSubTypeDesc" nillable="true" type="xsd:string" />
+					<element name="payablityCodeID" nillable="true" type="xsd:string" />
+					<element name="payablityCodeDesc" nillable="true" type="xsd:string" />
+					<element name="rateTypeID" nillable="true" type="xsd:string" />
+					<element name="rateTypeDesc" nillable="true" type="xsd:string" />
+					<element name="mobRateTypeID" nillable="true" type="xsd:string" />
+					<element name="mobRateTypeDesc" nillable="true" type="xsd:string" />
+					<element name="mobPayablityCodeID" nillable="true" type="xsd:string" />
+					<element name="mobPayablityCodeDesc" nillable="true" type="xsd:string" />
+					<element maxOccurs="unbounded" nillable="true" name="subAwardComponents" type="tns5:SubAwardComponent" />
+				</sequence>
+			</complexType>
+			<complexType name="SubAwardComponent">
+				<sequence>
+					<element name="subAwCompKey" nillable="false" type="xsd:string" />
+					<element name="schemeRateAmount" nillable="true" type="xsd:string" />
+					<element name="schemeIncrtRtAmt" nillable="true" type="xsd:string" />
+					<element name="schemeCdOutNo" nillable="true" type="xsd:string" />
+					<element name="upratedIncrRtAmt" nillable="true" type="xsd:string" />
+					<element name="upratedIncrPercRate" nillable="true" type="xsd:string" />
+					<element name="inhIncrRateAmt" nillable="true" type="xsd:string" />
+					<element name="inhIncrPercRate" nillable="true" type="xsd:string" />
+					<element name="inheritedIndicator" nillable="true" type="xsd:string" />
+					<element name="incrAmount" nillable="true" type="xsd:string" />
+					<element name="incrPercRate" nillable="true" type="xsd:string" />
+					<element name="gmpFlg" nillable="true" type="xsd:string" />
+					<element name="subSacAmount" nillable="true" type="xsd:string" />
+					<element name="proRataFrnAmount" nillable="true" type="xsd:string" />
+					<element name="proRataFrnDenominator" nillable="true" type="xsd:string" />
+					<element name="proRataFrnNumerator" nillable="true" type="xsd:string" />
+					<element name="sacPercRate" nillable="true" type="xsd:string" />
+					<element name="sacAmount" nillable="true" type="xsd:string" />
+					<element name="upratingInd" nillable="true" type="xsd:string" />
+					<element name="sacTypeID" nillable="false" type="xsd:string" />
+					<element name="sacTypeDesc" nillable="false" type="xsd:string" />
+					<element name="sacTypeStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="sacTypeEndDate" nillable="true" type="tns3:CISDate" />
+				</sequence>
+			</complexType>
+			<element name="api013_GetShortAwardHistoryRequest" nillable="false" type="tns5:API013_GetShortAwardHistoryRequest" />
+			<element name="api013_GetShortAwardHistoryResponse" nillable="false" type="tns5:API013_GetShortAwardHistoryResponse" />
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api010.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk" />
+			<complexType name="API010_GetInterestDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader" />
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="historyFlag" nillable="true" type="xsd:boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="API010_GetInterestDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader" />
+					<element maxOccurs="unbounded" name="interestDetails" nillable="true" type="tns7:Interest" />
+				</sequence>
+			</complexType>
+			<complexType name="Interest">
+				<sequence>
+					<element name="businessInterestStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="interestStartDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="businessInterestEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="interestEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="dwpServiceKeyID" nillable="false" type="xsd:string" />
+					<element name="dwpServiceKeyDesc" nillable="false" type="xsd:string" />
+					<element name="interestChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="interestChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="interestChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="interestChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="interestChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="interestChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="interestChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="interestsTypeID" nillable="false" type="xsd:string" />
+					<element name="interestsTypeDesc" nillable="false" type="xsd:string" />
+					<element maxOccurs="unbounded" name="interestedParties" nillable="true" type="tns7:InterestedParty" />
+				</sequence>
+			</complexType>
+			<complexType name="InterestedParty">
+				<sequence>
+					<element name="partyTypeDesc" nillable="true" type="xsd:string" />
+					<element name="partyTypeID" nillable="true" type="xsd:string" />
+					<element name="startDate" nillable="false" type="tns3:CISDate" />
+					<element name="partyStartDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="endDate" nillable="true" type="tns3:CISDate" />
+					<element name="partyEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="dwpBenefitKeyID" nillable="false" type="xsd:string" />
+					<element name="dwpBenefitServiceSystemID" nillable="true" type="xsd:string" />
+					<element name="dwpBenefitServiceSystemDesc" nillable="true" type="xsd:string" />
+					<element name="partyChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="partyChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="partyChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="partyChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="partyChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="partyChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="partyChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="sdOfficeCodeNumberID" nillable="false" type="xsd:string" />
+					<element name="sdOfficeCodeNumberDesc" nillable="false" type="xsd:string" />
+					<element name="sdOfficeTypeDesc" nillable="false" type="xsd:string" />
+					<element name="intOfficeTypeID" nillable="false" type="xsd:string" />
+					<element name="sdOfficeTypeID" nillable="false" type="xsd:string" />
+					<element name="intOfficeTypeDesc" nillable="false" type="xsd:string" />
+					<element name="intOfficeContactNo" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<element name="api010_GetInterestDetailsRequest" nillable="false" type="tns7:API010_GetInterestDetailsRequest" />
+			<element name="api010_GetInterestDetailsResponse" nillable="false" type="tns7:API010_GetInterestDetailsResponse" />
+		</schema>	
+		<schema elementFormDefault="qualified" targetNamespace="http://api008.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk" />
+			<complexType name="API008_GetContactDetailsRequest">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:RequestHeader" />
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="roleTypeID" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="API008_GetContactDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader" />
+					<element maxOccurs="unbounded" name="contactDetails" nillable="true" type="tns8:ContactDetails" />
+				</sequence>
+			</complexType>
+			<complexType name="ContactDetails">
+				<sequence>
+					<element name="persRoleContactStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="persRoleContactEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="contactStartDateApplDate" nillable="false" type="tns3:CISDate" />
+					<element name="contactEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="contactTypeID" nillable="false" type="xsd:string" />
+					<element name="contactTypeDesc" nillable="false" type="xsd:string" />
+					<element name="contactChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="contactChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="contactChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="contactChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="contactChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="contactChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="contactChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="roleTypeID" nillable="false" type="xsd:string" />
+					<element name="roleTypeDesc" nillable="false" type="xsd:string" />
+					<element name="preferredMethodOfContactID" nillable="true" type="xsd:string" />
+					<element name="preferredMethodOfContactDesc" nillable="true" type="xsd:string" />
+					<element name="detail" nillable="true" type="xsd:string" />
+					<element name="contactMediaTypeID" nillable="true" type="xsd:string" />
+					<element name="contactMediaTypeDesc" nillable="true" type="xsd:string" />
+					<element name="validTypeID" nillable="true" type="xsd:string" />
+					<element name="validTypeDesc" nillable="true" type="xsd:string" />
+					<element name="status" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<element name="api008_GetContactDetailsRequest" nillable="false" type="tns8:API008_GetContactDetailsRequest" />
+			<element name="api008_GetContactDetailsResponse" nillable="false" type="tns8:API008_GetContactDetailsResponse" />
+		</schema>
+		<schema elementFormDefault="qualified" targetNamespace="http://api006.webservice.cis.dwp.gov.uk" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:intf="http://wsfacade.webservice.cis.dwp.gov.uk" xmlns:tns3="http://messaging.common.cis.dwp.gov.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://messaging.common.cis.dwp.gov.uk" />
+			<complexType name="API006_GetNameDetailsRequest">
+				<sequence>
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="header" nillable="false" type="tns3:RequestHeader" />
+					<element name="historyFlag" nillable="true" type="xsd:boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="API006_GetNameDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="tns3:ResponseHeader" />
+					<element maxOccurs="unbounded" name="nameDetails" nillable="false" type="tns10:PersonName" />
+					<element maxOccurs="unbounded" name="nameDetailsHist" nillable="true" type="tns10:PersonName" />
+					<element name="reqFormOfAddr" nillable="true" type="tns10:RequestedFormOfAddress" />
+					<element maxOccurs="unbounded" name="reqFormOfAddrHist" nillable="true" type="tns10:RequestedFormOfAddress" />
+				</sequence>
+			</complexType>
+			<complexType name="PersonName">
+				<sequence>
+					<element name="title" nillable="true" type="xsd:string" />
+					<element name="forename" nillable="true" type="xsd:string" />
+					<element name="surname" nillable="false" type="xsd:string" />
+					<element name="nameSuffix" nillable="true" type="xsd:string" />
+					<element name="nameStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="nameEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="persNameNotifiedStartDate" nillable="true" type="tns3:CISDate" />
+					<element name="nameStrtDtApplDt" nillable="true" type="tns3:CISDate" />
+					<element name="persNameNotifiedEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="nameEndDtApplDt" nillable="true" type="tns3:CISDate" />
+					<element name="persNameNotifiedStartTime" nillable="true" type="tns3:CISTime" />
+					<element name="nameChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="nameChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="nameChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="nameChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="nameChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="nameChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="nameChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="nameTypeDesc" nillable="false" type="xsd:string" />
+					<element name="nameTypeID" nillable="false" type="xsd:string" />
+					<element name="correctionFlg" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="RequestedFormOfAddress">
+				<sequence>
+					<element name="reqFormOfAddress" nillable="false" type="xsd:string" />
+					<element name="reqFormOfAddStartDate" nillable="false" type="tns3:CISDate" />
+					<element name="reqAddStartDateApplDate" nillable="false" type="tns3:CISDate" />
+					<element name="reqFormOfAddStartTime" nillable="true" type="tns3:CISTime" />
+					<element name="reqFormOfAddEndDate" nillable="true" type="tns3:CISDate" />
+					<element name="reqAddEndDateApplDate" nillable="true" type="tns3:CISDate" />
+					<element name="reqAddChgMdBenSysID" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdBenSysDesc" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdOfceLocnID" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdOfceLocnDesc" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdOfceLocnContactNo" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdDeptID" nillable="true" type="xsd:string" />
+					<element name="reqAddChgMdDeptDesc" nillable="true" type="xsd:string" />
+					<element name="correctionFlg" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<element name="api006_GetNameDetailsRequest" nillable="false" type="tns10:API006_GetNameDetailsRequest" />
+			<element name="api006_GetNameDetailsResponse" nillable="false" type="tns10:API006_GetNameDetailsResponse" />
+		</schema>
+				
+	</wsdl:types>
+	<wsdl:message name="CISFaultDetails">
+		<wsdl:part name="fault" element="ciscommon:CISFaultDetails" />
+	</wsdl:message>
+	<!-- Message added for GetSnapshotDetails -->
+	<wsdl:message name="GetSnapshotDetailsRequest">
+		<wsdl:part name="parameters" element="tns1:getSnapshotDetailsRequest" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:message name="GetSnapshotDetailsResponse">
+		<wsdl:part name="parameters" element="tns1:getSnapshotDetailsResponse" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:portType name="CorporateCISGetSnapshotDetailsWS">
+		<!-- Operation added for GetSnapshotDetails -->
+		<wsdl:operation name="GetSnapshotDetails">
+			<wsdl:input name="GetSnapshotDetailsRequest" message="impl:GetSnapshotDetailsRequest" />
+			<wsdl:output name="getSnapshotDetailsResponse" message="impl:GetSnapshotDetailsResponse" />
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CorporateCISGetSnapshotDetailsWebServiceSoapBinding" type="impl:CorporateCISGetSnapshotDetailsWS">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- Operation added for GetSnapshotDetails -->
+		<wsdl:operation name="GetSnapshotDetails">
+			<wsdlsoap:operation />
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetSnapshotDetailsRequest" part="ibheader" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetSnapshotDetailsResponse" part="ibheader" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CorporateCISGetSnapshotDetailsWebService">
+		<wsdl:port name="CorporateCISGetSnapshotDetailsWS" binding="impl:CorporateCISGetSnapshotDetailsWebServiceSoapBinding">
+			<wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/CorporateCISGetSnapshotDetailsWS" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

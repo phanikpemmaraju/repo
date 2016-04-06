@@ -5,7 +5,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 import org.junit.Before;
@@ -33,21 +36,23 @@ public class ParticipantDTOTest {
 	
 	private Validator validator;
 	private ObjectMapper mapper;
+	private SimpleDateFormat dateFormat;
 
 	@Before
 	public void setup() {
 		ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 		this.validator = vf.getValidator();
 		this.mapper = new ObjectMapper();
+		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 	@Test
-	public void validationsTest(){
+	public void validationsTest() throws ParseException{
 		// Invalid NI
 		ParticipantDTO participant = new ParticipantDTO();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 		Set<ConstraintViolation<ParticipantDTO>> violations = this.validator.validate(participant);
 		assertEquals(1, violations.size());
 		assertEquals("error.invalid.nino.format", violations.iterator().next().getMessage());
@@ -71,22 +76,22 @@ public class ParticipantDTOTest {
 		assertEquals("error.dob.null", violations.iterator().next().getMessage());
 		
 		// Valid NI
-		participant.setDob(LocalDate.of(1982, 12, 16));
+		participant.setDob(dateFormat.parse("1982-12-16"));
 		violations = this.validator.validate(participant);
 		assertEquals(0, violations.size());
 			
 		// Test the toString() method
-		final String value = "ParticipantDTO [participantId=56dffaa6097d9818d8b455a7, providerId=1111111, nino=SJ196058B, contractId=4001115, creationDate=" + LocalDate.now().toString() + ", updatedDate=" + LocalDate.now().toString() + ", recordState =INCOMPLETE]";
+		final String value = "ParticipantDTO [participantId=56dffaa6097d9818d8b455a7, providerId=1111111, nino=SJ196058B, contractId=4001115, creationDate=" + dateFormat.parse(dateFormat.format(new Date())) + ", updatedDate=" + dateFormat.parse(dateFormat.format(new Date())).toString() + ", recordState =INCOMPLETE]";
 		assertThat(participant.toString(), is(value));
 	}
 	
 	@Test
-	public void basicParticipantsViewTest() throws IOException{
+	public void basicParticipantsViewTest() throws IOException, ParseException{
 		// Set Participant details for Basic Participant Json View
 		final ParticipantDTO participant = new ParticipantDTO();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 		
 		participant.setAlcoholUser(false);
 		
@@ -98,11 +103,11 @@ public class ParticipantDTOTest {
 		assertEquals(viewValue, participantView);		
 	}
 	@Test
-	public void fullParticipantsViewTest() throws IOException{
+	public void fullParticipantsViewTest() throws IOException, ParseException{
 		final ParticipantDTO participant = new ParticipantDTO();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 		
 		// Create Address object		
 		final Address address = new Address.AddressBuilder("Apartment 33","Sheffield","S1 4GG")
@@ -116,7 +121,7 @@ public class ParticipantDTOTest {
 		participant.setGender("MALE");participant.setEntryEmpStatus(EntryEmpStatus.JOBSEEKING);participant.setLongTermUnemployed(false);
 		participant.setBasicSkills(true);participant.setIscedLevel(ISCEDLevel.THREE);participant.setHomeless(false);
 		participant.setDrugUser(false);participant.setHouseholdType(HouseHoldType.JOBLESS_HOUSEHOLD);
-		participant.setStartDate(LocalDate.now().plusDays(14));participant.setProposedExitDate(LocalDate.now().plusDays(74));participant.setExitDate(LocalDate.now().plusDays(75));
+		participant.setStartDate(dateFormat.parse(LocalDate.now().plusDays(14).toString()));participant.setProposedExitDate(dateFormat.parse(LocalDate.now().plusDays(74).toString()));participant.setExitDate(dateFormat.parse(LocalDate.now().plusDays(75).toString()));
 		participant.setExitTraining(false);participant.setExitSkills(false);participant.setExitQualification(false);participant.setExitChildcare(false);
 		participant.setDeliveryPostcode("S1 4GG");participant.setSignedForm("signed");participant.setFundingAggrement("funds");
 		participant.setCor("cor");participant.setPriorityAxis("priority");participant.setExitEmpStatus(ExitEmpStatus.JOBSEEKING);

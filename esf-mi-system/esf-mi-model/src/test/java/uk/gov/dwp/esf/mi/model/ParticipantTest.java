@@ -4,7 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+
 import org.junit.Test;
 
 import uk.gov.dwp.esf.mi.common.EntryEmpStatus;
@@ -16,7 +20,7 @@ import uk.gov.dwp.esf.mi.common.RecordState;
 
 public class ParticipantTest {
 	
-	
+	final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	/*
 	 *  Using Builder Pattern to create Participant default Object
 	 */	
@@ -37,14 +41,14 @@ public class ParticipantTest {
 	 *  Using Builder Pattern to create Participant Object with all mandatory fields
 	 */
 	@Test
-	public void buildAParticipantWithMandatoryFields() {
-		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", LocalDate.of(1982, 12, 16), 4001115)
+	public void buildAParticipantWithMandatoryFields() throws ParseException {
+		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", dateFormat.parse("1982-12-16"), 4001115)
 									  .build();
 		
 		assertThat(participant.getParticipantId(), is("56dffaa6097d9818d8b455a7"));
         assertThat(participant.getProviderId(), is(1111111));
         assertThat(participant.getNino(), is("SJ196058B"));
-        assertThat(participant.getDob().toString(), is("1982-12-16"));
+        assertThat(participant.getDob(), is(dateFormat.parse("1982-12-16")));
         assertThat(participant.getContractId(), is(4001115));        
         assertNotNull(participant.toString());
 	}
@@ -53,23 +57,27 @@ public class ParticipantTest {
 	 *  Using Builder Pattern to create Participant Object with all fields
 	 */
 	@Test
-	public void buildAParticipantWithAllFields() {
-		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", LocalDate.of(1982, 12, 16), 4001115)
+	public void buildAParticipantWithAllFields() throws ParseException {
+		Participant participant = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B",  dateFormat.parse("1982-12-16"), 4001115)
 				.ethnicity(Ethnicity.WHITE_ENGLISH).isMatch(true).isAlcoholUser(false).isDisabled(false).gender("MALE")
 				.entryEmpStatus(EntryEmpStatus.JOBSEEKING).longTermUnemployed(false).basicSkills(true).ISCEDLevel(ISCEDLevel.THREE)
 				.isHomeless(false).isDrugUser(false).householdType(HouseHoldType.JOBLESS_HOUSEHOLD)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now())
-				.startDate(LocalDate.now().plusDays(14)).proposedExitDate(LocalDate.now().plusDays(74)).exitDate(LocalDate.now().plusDays(75))
 				.exitTraining(false).exitSkills(false).exitQualification(false).exitChildcare(false)
 				.deliveryPostcode("S1 4GG").signedForm("signed").fundingAggrement("funds").recordState(RecordState.INCOMPLETE)
-				.cor("cor").priorityAxis("priority").exitEmpStatus(ExitEmpStatus.JOBSEEKING).build();
+				.cor("cor").priorityAxis("priority").exitEmpStatus(ExitEmpStatus.JOBSEEKING)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date())))
+				.updatedDate(dateFormat.parse(dateFormat.format(new Date())))
+				.startDate(dateFormat.parse(LocalDate.now().plusDays(14).toString()))
+				.exitDate(dateFormat.parse(LocalDate.now().plusDays(75).toString()))
+				.proposedExitDate(dateFormat.parse(LocalDate.now().plusDays(74).toString()))
+				.build();
 		
 		assertThat(participant.getParticipantId(), is("56dffaa6097d9818d8b455a7"));
-		assertThat(participant.getCreationDate(), is(LocalDate.now()));
-		assertThat(participant.getUpdatedDate(), is(LocalDate.now()));
-		assertThat(participant.getProposedExitDate(), is(LocalDate.now().plusDays(74)));
-		assertThat(participant.getStartDate(), is(LocalDate.now().plusDays(14)));
-		assertThat(participant.getExitDate(), is(LocalDate.now().plusDays(75)));
+		assertThat(participant.getCreationDate(), is(dateFormat.parse(LocalDate.now().toString())));
+		assertThat(participant.getUpdatedDate(), is(dateFormat.parse(LocalDate.now().toString())));
+		assertThat(participant.getProposedExitDate(), is(dateFormat.parse(LocalDate.now().plusDays(74).toString())));
+		assertThat(participant.getStartDate(), is(dateFormat.parse(LocalDate.now().plusDays(14).toString())));
+		assertThat(participant.getExitDate(), is(dateFormat.parse(LocalDate.now().plusDays(75).toString())));
 		
 		
 		assertThat(participant.getGender(), is("MALE"));
@@ -106,13 +114,15 @@ public class ParticipantTest {
 	 *  Test Participant Builder object
 	 */
 	@Test
-	public void buildParticipantBuilderWithAllFields() {
-		Participant.ParticipantBuilder builder = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B", LocalDate.of(1982, 12, 16), 4001115)
+	public void buildParticipantBuilderWithAllFields() throws ParseException{
+		Participant.ParticipantBuilder builder = new Participant.ParticipantBuilder("56dffaa6097d9818d8b455a7", 1111111, "SJ196058B",  dateFormat.parse("1982-12-16"), 4001115)
 				.ethnicity(Ethnicity.WHITE_ENGLISH).isMatch(true).isAlcoholUser(false).isDisabled(false).gender("MALE")
 				.entryEmpStatus(EntryEmpStatus.JOBSEEKING).longTermUnemployed(false).basicSkills(true).ISCEDLevel(ISCEDLevel.THREE)
 				.isHomeless(false).isDrugUser(false).householdType(HouseHoldType.JOBLESS_HOUSEHOLD)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now())
-				.startDate(LocalDate.now().plusDays(14)).proposedExitDate(LocalDate.now().plusDays(74)).exitDate(LocalDate.now().plusDays(75))
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date())))
+				.startDate(dateFormat.parse(LocalDate.now().plusDays(14).toString()))
+				.exitDate(dateFormat.parse(LocalDate.now().plusDays(75).toString()))
+				.proposedExitDate(dateFormat.parse(LocalDate.now().plusDays(74).toString()))
 				.exitTraining(false).exitSkills(false).exitQualification(false).exitChildcare(false)
 				.deliveryPostcode("S1 4GG").signedForm("signed").fundingAggrement("funds").recordState(RecordState.INCOMPLETE)
 				.cor("cor").priorityAxis("priority").exitEmpStatus(ExitEmpStatus.JOBSEEKING);
@@ -128,11 +138,11 @@ public class ParticipantTest {
 	 *  We would require this as we are not storing the Address and Personal details of Participant in the backend.
 	 */
 	@Test
-	public void buildParticipant() {
+	public void buildParticipant() throws ParseException{
 		final Participant participant = new Participant();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589");participant.setDob( dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 		
 		// Set Participant details for Full Participant Json View
 		participant.setEthnicity(Ethnicity.WHITE_ENGLISH);participant.setExitEmpStatus(ExitEmpStatus.JOBSEEKING);
@@ -140,7 +150,7 @@ public class ParticipantTest {
 		participant.setGender("MALE");participant.setEntryEmpStatus(EntryEmpStatus.JOBSEEKING);participant.setLongTermUnemployed(false);
 		participant.setBasicSkills(true);participant.setIscedLevel(ISCEDLevel.THREE);participant.setHomeless(false);
 		participant.setDrugUser(false);participant.setHouseholdType(HouseHoldType.JOBLESS_HOUSEHOLD);
-		participant.setStartDate(LocalDate.now().plusDays(14));participant.setProposedExitDate(LocalDate.now().plusDays(74));participant.setExitDate(LocalDate.now().plusDays(75));
+		participant.setStartDate(dateFormat.parse(LocalDate.now().plusDays(14).toString()));participant.setProposedExitDate(dateFormat.parse(LocalDate.now().plusDays(74).toString()));participant.setExitDate(dateFormat.parse(LocalDate.now().plusDays(75).toString()));
 		participant.setExitTraining(false);participant.setExitSkills(false);participant.setExitQualification(false);participant.setExitChildcare(false);
 		participant.setDeliveryPostcode("S1 4GG");participant.setSignedForm("signed");participant.setFundingAggrement("funds");
 		participant.setCor("cor");participant.setPriorityAxis("priority");

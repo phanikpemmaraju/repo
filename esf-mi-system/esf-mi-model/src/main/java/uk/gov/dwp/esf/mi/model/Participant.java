@@ -1,6 +1,6 @@
 package uk.gov.dwp.esf.mi.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import uk.gov.dwp.esf.mi.common.EntryEmpStatus;
 import uk.gov.dwp.esf.mi.common.Ethnicity;
@@ -35,7 +37,8 @@ public class Participant {
 	@NotNull
 	private String nino;
 	@NotNull
-	private LocalDate dob;	
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date dob;	
 	private String providerRef;
 	private Ethnicity ethnicity;
 	private boolean match;
@@ -49,12 +52,17 @@ public class Participant {
 	private boolean alcoholUser;
 	private boolean drugUser;	
 	private HouseHoldType householdType;
-	private LocalDate creationDate;
-	private LocalDate updatedDate;
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date creationDate;
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date updatedDate;
 	private RecordState recordState;
-	private LocalDate startDate;
-	private LocalDate proposedExitDate;
-	private LocalDate exitDate;
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date startDate;
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date proposedExitDate;
+	@DateTimeFormat(iso=ISO.DATE)
+	private Date exitDate;
 	@NotNull
 	private Integer contractId;
 	private ExitEmpStatus exitEmpStatus;
@@ -87,7 +95,7 @@ public class Participant {
 		return nino;
 	}
 
-	public LocalDate getDob() {
+	public Date getDob() {
 		return dob;
 	}
 	
@@ -141,11 +149,11 @@ public class Participant {
 		return householdType;
 	}
 
-	public LocalDate getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public LocalDate getUpdatedDate() {
+	public Date getUpdatedDate() {
 		return updatedDate;
 	}
 
@@ -153,15 +161,15 @@ public class Participant {
 		return recordState;
 	}
 
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public LocalDate getProposedExitDate() {
+	public Date getProposedExitDate() {
 		return proposedExitDate;
 	}
 
-	public LocalDate getExitDate() {
+	public Date getExitDate() {
 		return exitDate;
 	}
 
@@ -221,7 +229,7 @@ public class Participant {
 		this.nino = nino;
 	}
 	
-	public void setDob(LocalDate dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 
@@ -277,11 +285,11 @@ public class Participant {
 		this.householdType = householdType;
 	}
 
-	public void setCreationDate(LocalDate creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public void setUpdatedDate(LocalDate updatedDate) {
+	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 
@@ -289,15 +297,15 @@ public class Participant {
 		this.recordState = recordState;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public void setProposedExitDate(LocalDate proposedExitDate) {
+	public void setProposedExitDate(Date proposedExitDate) {
 		this.proposedExitDate = proposedExitDate;
 	}
 
-	public void setExitDate(LocalDate exitDate) {
+	public void setExitDate(Date exitDate) {
 		this.exitDate = exitDate;
 	}
 
@@ -394,7 +402,7 @@ public class Participant {
 		private final String participantId;
 		private final Integer providerId;
 		private final String nino;
-		private final LocalDate dob;
+		private final Date dob;
 		private final Integer contractId;
 		private String providerRef;
 		private boolean match;
@@ -409,12 +417,12 @@ public class Participant {
 		private boolean alcoholUser;
 		private boolean drugUser;
 		private HouseHoldType householdType;
-		private LocalDate creationDate;
-		private LocalDate updatedDate;
+		private Date creationDate;
+		private Date updatedDate;
 		private RecordState recordState;
-		private LocalDate startDate;
-		private LocalDate proposedExitDate;
-		private LocalDate exitDate;
+		private Date startDate;
+		private Date proposedExitDate;
+		private Date exitDate;
 		private ExitEmpStatus exitEmpStatus;
 		private boolean exitTraining;
 		private boolean exitSkills;
@@ -426,7 +434,7 @@ public class Participant {
 		private String cor;
 		private String priorityAxis;
 				
-		public ParticipantBuilder(String participantId, Integer providerId, String nino , LocalDate dob , Integer contractId) {
+		public ParticipantBuilder(String participantId, Integer providerId, String nino , Date dob , Integer contractId) {
 			this.participantId = participantId;
 			this.providerId = providerId;
 			this.nino = nino;
@@ -501,12 +509,12 @@ public class Participant {
 			return this;
 		}
 		
-		public ParticipantBuilder creationDate(LocalDate creationDate) {
+		public ParticipantBuilder creationDate(Date creationDate) {
 			this.creationDate = creationDate;
 			return this;
 		}
 		
-		public ParticipantBuilder updatedDate(LocalDate updatedDate) {
+		public ParticipantBuilder updatedDate(Date updatedDate) {
 			this.updatedDate = updatedDate;
 			return this;
 		}
@@ -516,17 +524,17 @@ public class Participant {
 			return this;
 		}
 		
-		public ParticipantBuilder startDate(LocalDate startDate) {
+		public ParticipantBuilder startDate(Date startDate) {
 			this.startDate = startDate;
 			return this;
 		}
 		
-		public ParticipantBuilder proposedExitDate(LocalDate proposedExitDate) {
+		public ParticipantBuilder proposedExitDate(Date proposedExitDate) {
 			this.proposedExitDate = proposedExitDate;
 			return this;
 		}
 		
-		public ParticipantBuilder exitDate(LocalDate exitDate) {
+		public ParticipantBuilder exitDate(Date exitDate) {
 			this.exitDate = exitDate;
 			return this;
 		}		

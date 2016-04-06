@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************ 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.0    *  Paul Beharry      * 22/06/05   * Created
+	*     2.1    *  Pascal Delrieu    * 23/06/05   * Reintroduced cherishedAddFlg and renamed deliveryPointPrefix
+														to deliveryPointSuffix
+	*****************************************************************************************************************-->
+	<!-- 
+	* $Author: Pdelrieu $
+	* $Date: 28/06/05 16:15 $
+	* $Modtime: 28/06/05 16:15 $
+	* $Revision: 6 $
+	* $Workfile: GetAddressDetails.xsd $
+-->
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://dwp.gov.uk/Common/CIS/GetAddressDetails/Data/2.1/API007_GetAddressDetails" 
+		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" >
+			<xs:import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd" />
+			<!-- GetResponse type -->
+			
+			<xs:complexType name="AddressDetails">
+				<xs:sequence>
+					<xs:element name="addressTypeID" nillable="false" type="xs:string" />
+					<xs:element name="addressTypeDesc" nillable="true" type="xs:string" />
+					<xs:element name="personRoleKey" nillable="false" type="xs:string" />										
+					<xs:element name="roleTypeID" nillable="false" type="xs:string" />										
+					<xs:element name="roleTypeDesc" nillable="true" type="xs:string" />
+					<xs:element name="persAddrStartDate" nillable="true" type="ciscommon:CISDate" />
+					<xs:element name="persAddrEndDate" nillable="true" type="ciscommon:CISDate" />					
+					<xs:element name="notifiedStartDate" nillable="false" type="ciscommon:CISDate" />
+					<xs:element name="notifiedEndDate" nillable="true" type="ciscommon:CISDate" />					
+					<xs:element name="persAddrStartDateApplDate" nillable="true" type="ciscommon:CISDate" />
+					<xs:element name="persAddrEndDateApplDate" nillable="true" type="ciscommon:CISDate" />
+					<xs:element name="addressStatusTypeID" nillable="true" type="xs:string" />
+					<xs:element name="addressStatusTypeDesc" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdBenSysID" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdBenSysDesc" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdDeptID" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdDeptDesc" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdOfceLocnID" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdOfceLocnDesc" nillable="true" type="xs:string" />
+					<xs:element name="persAddrChgMdOfceLocnContactNo" nillable="true" type="xs:string" />
+					<xs:element name="addressStartDate" nillable="true" type="ciscommon:CISDate" />
+					<xs:element name="addressEndDate" nillable="true" type="ciscommon:CISDate" />
+					<xs:element name="addressLine1" nillable="true" type="xs:string" />
+					<xs:element name="addressLine2" nillable="true" type="xs:string" />
+					<xs:element name="addressLine3" nillable="true" type="xs:string" />
+					<xs:element name="addressLine4" nillable="true" type="xs:string" />
+					<xs:element name="addressLine5" nillable="true" type="xs:string" />
+					<xs:element name="postCode" nillable="true" type="xs:string" />
+					<xs:element name="postTown" nillable="true" type="xs:string" />
+					<xs:element name="countryCodeID" nillable="true" type="xs:string" />
+					<xs:element name="countryCodeDesc" nillable="true" type="xs:string" />					
+					<xs:element name="uprn" nillable="true" type="xs:string" />
+					<xs:element name="potentViolentAddr" nillable="true" type="xs:string" />
+					<xs:element name="futureScans" nillable="true" type="xs:string" />
+					<xs:element name="mailCodeTypeID" nillable="true" type="xs:string" />
+					<xs:element name="mailCodeTypeDesc" nillable="true" type="xs:string" />
+					<xs:element name="addressChecksum" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdBenSysID" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdBenSysDesc" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdDeptID" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdDeptDesc" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdOfceLocnID" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdOfceLocnDesc" nillable="true" type="xs:string" />
+					<xs:element name="potlViolAddChgMdOfceLocnContactNo" nillable="true" type="xs:string" />
+					<xs:element name="correctionFlg" nillable="true" type="xs:string" />
+					<xs:element name="deliveryPointSuffix" nillable="true" type="xs:string" />
+					<xs:element name="cherishedAddFlg" nillable="true" type="xs:string" />
+					<xs:element name="mailCodeSubTypeID" nillable="true" type="xs:string" />
+					<xs:element name="mailCodeSubTypeDesc" nillable="true" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			</xs:schema>

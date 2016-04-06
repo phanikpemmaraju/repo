@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    ***************************************************************************************************************** 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.2    *  Mirko Carlini     * 01/02/06   * Added fields for the Gender Recognition (Rel 2c)
+	*****************************************************************************************************************
+-->
+<xs:schema targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.2/API038_GetPerson" 
+	xmlns:getperson2_1="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson"
+	elementFormDefault="qualified" 
+	attributeFormDefault="qualified" 
+	xmlns:getperson2_2="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.2/API038_GetPerson" 
+	xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd" />
+	<xs:import namespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/2.1/API038_GetPerson" schemaLocation="CorporateCISGetPerson02.1.xsd" />
+	<!-- Gender Recognition type -->
+	<xs:complexType name="GenderRecognition">
+		<xs:sequence>
+			<xs:element name="grGrantDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="grRecvdDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="genderRsnTypeId" nillable="true" type="xs:string"/>
+			<xs:element name="genderRsnTypeDesc" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdBenSysId" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdBenSysDesc" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdOfceLocnId" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdOfceLocnDesc" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdOfceLocnContactNo" nillable="true" type="xs:string"/>															
+			<xs:element name="grChgMdDeptId" nillable="true" type="xs:string"/>
+			<xs:element name="grChgMdDeptDesc" nillable="true" type="xs:string"/>															
+			<xs:element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>															
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SexGroup">
+		<xs:sequence>
+			<xs:element name="sex" nillable="false" type="xs:string"/>
+			<xs:element name="sexStartDate" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="sexStartDateApplDt" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="sexEndDate" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="sexEndDateApplDt" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="sexChgMdBenSysID" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdBenSysDesc" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdOfceLocnID" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdOfceLocnDesc" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdOfceTelNo" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdDeptID" nillable="true" type="xs:string"/>
+			<xs:element name="sexChgMdDeptDesc" nillable="true" type="xs:string"/>
+			<xs:element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+			<xs:element name="grFlag" nillable="false" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Person">
+		<xs:sequence>
+			<xs:element name="ninoGroup" nillable="false" type="getperson2_1:NinoGroup"/>
+			<xs:element name="birthDateGroup" nillable="false" type="getperson2_1:BirthDateGroup"/>					
+			<xs:element name="sexGroup" nillable="false" type="getperson2_2:SexGroup"/>
+			<xs:element name="deathDateGroup" nillable="true" type="getperson2_1:DeathDateGroup"/>
+			<xs:element name="potViolGroup" nillable="true" type="getperson2_1:PotViolGroup"/>					
+			<xs:element name="natSensGroup" nillable="false" type="getperson2_1:NatSensGroup"/>					
+			<xs:element name="ethnOrgnGroup" nillable="true" type="getperson2_1:EthnOrgnGroup"/>										
+			<xs:element name="prefLangGroup" nillable="true" type="getperson2_1:PrefLangGroup"/>					
+			<xs:element name="spknLangGroup" nillable="true" type="getperson2_1:SpknLangGroup"/>					
+			<xs:element name="postOfceGroup" nillable="true" type="getperson2_1:PostOfceGroup"/>			
+			<xs:element name="immgrnGroup" nillable="true" type="getperson2_1:ImmgrnGroup"/>
+			<xs:element name="disabilityGroup" nillable="true" type="getperson2_1:DisabilityGroup"/>					
+			<xs:element name="otherDataGroup" nillable="true" type="getperson2_1:OtherDataGroup"/>					
+		</xs:sequence>
+	</xs:complexType>
+	<!-- PersonHist type -->						
+	<xs:complexType name="PersonHist">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ninoHistGroup" nillable="false" type="getperson2_1:NinoGroup"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="birthDateHistGroup" nillable="false" type="getperson2_1:BirthDateGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="sexHistGroup" nillable="false" type="getperson2_2:SexGroup"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="deathDateHistGroup" nillable="false" type="getperson2_1:DeathDateGroup"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="potViolHistGroup" nillable="false" type="getperson2_1:PotViolGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="natSensHistGroup" nillable="false" type="getperson2_1:NatSensGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ethnOrgnHistGroup" nillable="false" type="getperson2_1:EthnOrgnGroup"/>										
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="prefLangHistGroup" nillable="false" type="getperson2_1:PrefLangGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="spknLangHistGroup" nillable="false" type="getperson2_1:SpknLangGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="postOfceHistGroup" nillable="false" type="getperson2_1:PostOfceGroup"/>			
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="immgrnHistGroup" nillable="false" type="getperson2_1:ImmgrnGroup"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="disabilityHistGroup" nillable="false" type="getperson2_1:DisabilityGroup"/>					
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="otherDataHistGroup" nillable="false" type="getperson2_1:OtherDataGroup"/>																					
+		</xs:sequence>
+	</xs:complexType>				
+	<xs:complexType name="SpecialNeeds">
+		<xs:sequence>
+			<xs:element name="specialNeedsKey" nillable="false" type="xs:string" />
+			<xs:element name="needsTypeID" nillable="false" type="xs:string" />
+			<xs:element name="needsTypeDesc" nillable="false" type="xs:string" />
+			<xs:element name="startDate" nillable="false" type="ciscommon:CISDate"/>
+			<xs:element name="endDate" nillable="true" type="ciscommon:CISDate"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

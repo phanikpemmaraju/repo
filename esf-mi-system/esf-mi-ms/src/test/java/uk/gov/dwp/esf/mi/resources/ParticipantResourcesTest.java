@@ -4,8 +4,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+//import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -19,22 +22,24 @@ import static org.hamcrest.Matchers.*;
 public class ParticipantResourcesTest {
 	
 	private ParticipantResources participantResources;
+	private SimpleDateFormat dateFormat;
 	
 	@Before
 	public void setup(){
 		participantResources = new ParticipantResources();
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 	
 	@Test
-	public void resourcesTest(){
+	public void resourcesTest() throws ParseException{
 		Link selfLink = new Link("/participants/56dffaa6097d9818d8b455a7");
 		List<ParticipantResource> participants = new ArrayList<>();
 		List<Link> links = new ArrayList<>();
 		ParticipantDTO participant = new ParticipantDTO();
 		participant.setParticipantId("56dffaa6097d9818d8b455a7");participant.setProviderId(1111111);
-		participant.setContractId(4001115);participant.setNino("SJ1960589B");participant.setDob(LocalDate.of(1982, 12, 16));
-		participant.setCreationDate(LocalDate.now());participant.setUpdatedDate(LocalDate.now());participant.setRecordState(RecordState.INCOMPLETE);
+		participant.setContractId(4001115);participant.setNino("SJ1960589B");participant.setDob(dateFormat.parse("1982-12-16"));
+		participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));participant.setRecordState(RecordState.INCOMPLETE);
 		participant.setAlcoholUser(false);
 		ParticipantResource resource = new ParticipantResource(participant);
 		assertNotNull(resource);

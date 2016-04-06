@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    ***************************************************************************************************************** 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.2    *  Mirko Carlini     * 01/02/06   * Added fields for the Gender Recognition (Rel 2c)
+	*****************************************************************************************************************
+-->
+<xs:schema xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.1/API038_GetPerson" targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Data/3.1/API038_GetPerson" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd"/>
+	<!-- Person Indicator type -->
+	<xs:complexType name="PersonIndDataGroup">
+		<xs:sequence>
+			<xs:element name="indTypeID" type="xs:string" nillable="true"/>
+			<xs:element name="indTypeDesc" type="xs:string" nillable="true"/>
+			<xs:element name="indValueID" type="xs:string" nillable="true"/>
+			<xs:element name="indValueDesc" type="xs:string" nillable="true"/>
+			<xs:element name="indStartDt" type="ciscommon:CISDate" nillable="true"/>
+			<xs:element name="indStartDtApplDt" type="ciscommon:CISDate" nillable="true"/>
+			<xs:element name="indEndDt" type="ciscommon:CISDate" nillable="true"/>
+			<xs:element name="indEndDtApplDt" type="ciscommon:CISDate" nillable="true"/>
+			<xs:element name="indChgMdBenSysID" type="xs:string" nillable="true"/>
+			<xs:element name="indChgMdBenSysDesc" type="xs:string" nillable="true"/>
+			<xs:element name="indChgMdOfceLocnID" type="xs:string" nillable="true"/>
+			<xs:element name="indChgMdOfceLocnDesc" type="xs:string" nillable="true"/>
+			<xs:element name="indChgMdDeptID" type="xs:string" nillable="true"/>
+			<xs:element name="indChgMdDeptDesc" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

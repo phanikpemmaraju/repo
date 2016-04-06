@@ -4,9 +4,13 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.DateTimePath;
 
 import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import uk.gov.dwp.esf.mi.model.Participant;
 import org.slf4j.Logger;
@@ -15,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class ParticipantPredicate {
 	
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());	
-	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private PathBuilder<Participant> participantPath;
 	private SearchCriteria criteria;
 	private BooleanExpression expression;
@@ -61,7 +65,21 @@ public class ParticipantPredicate {
 
 				// return number expression
 				return expression;
-			} else {
+			} else if (isDate(strings.get(0))){
+				final DateTimePath<Date> path = participantPath.getDateTime(criteria.getKey(),Date.class);		
+				//strings.forEach(string -> expression = (expression == null) ? stringExpressions(string, criteria, path) : expression.or(stringExpressions(string, criteria, path)));
+				strings.forEach(string -> {
+					expression = (expression == null) ? dateExpressions(string, criteria, path) : 
+						(expression =
+								(criteria.getOperation().equalsIgnoreCase("!=") || criteria.getOperation().equalsIgnoreCase("<>"))
+								?
+										expression.and(dateExpressions(string, criteria, path))
+						 : expression.or(dateExpressions(string, criteria, path)));
+					;} );
+				// return string expression
+				return expression;
+			}
+			else {
 				final StringPath path = participantPath.getString(criteria.getKey());		
 				//strings.forEach(string -> expression = (expression == null) ? stringExpressions(string, criteria, path) : expression.or(stringExpressions(string, criteria, path)));
 				strings.forEach(string -> {
@@ -80,7 +98,10 @@ public class ParticipantPredicate {
 				final NumberPath<Integer> path = participantPath.getNumber(criteria.getKey(), Integer.class);
 				int value = Integer.parseInt(criteria.getValue().toString());
 				return numberExpressions(value, criteria, path);
-			} else {
+			} else if (isDate(criteria.getValue().toString())){
+				final DateTimePath<Date> path = participantPath.getDateTime(criteria.getKey(),Date.class);
+				return dateExpressions(criteria.getValue().toString(), criteria, path);
+			}else {
 				final StringPath path = participantPath.getString(criteria.getKey());
 				return stringExpressions(criteria.getValue().toString(), criteria, path);
 			}
@@ -90,10 +111,23 @@ public class ParticipantPredicate {
 	/*
 	 * Check whether given string is a numeric string value
 	 */
-	public static boolean isNumeric(final String str) {
+	public boolean isNumeric(final String str) {
 		try {
 			Long.parseLong(str);
 		} catch (final NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	/*
+	 * Check whether given string is a date object for pattern 'yyyy-MM-dd'
+	 */
+	public boolean isDate(final String str) {
+		try {
+			dateFormat.parse(str);
+		} catch (final ParseException e) {
 			return false;
 		}
 		return true;
@@ -161,6 +195,51 @@ public class ParticipantPredicate {
 			final String[] dates = value.split(":");
 			return path.between(dates[0], dates[1]);
 		default:
+			return null;
+		}
+	}
+	
+	
+	/*
+	 * This method returns a BooleanExpression based on the operator provided for a DateTimePath.
+	 * 
+	 */
+	public BooleanExpression dateExpressions(final String value, final SearchCriteria criteria, final DateTimePath<Date> path) {
+		try{
+			switch(criteria.getOperation()){
+			case "=":
+				return path.eq(dateFormat.parse(value));
+			case ">":
+				return path.gt(dateFormat.parse(value));
+			case "_gt":
+				return path.gt(dateFormat.parse(value));
+			case "<":
+				return path.lt(dateFormat.parse(value));
+			case "_lt":
+				return path.lt(dateFormat.parse(value));
+			case ">=":
+				return path.goe(dateFormat.parse(value));
+			case "_gt=":
+				return path.goe(dateFormat.parse(value));
+			case "<=":
+				return path.loe(dateFormat.parse(value));
+			case "_lt=":
+				return path.loe(dateFormat.parse(value));
+			case "!=":
+				return path.ne(dateFormat.parse(value));
+			case "<>":
+				return path.ne(dateFormat.parse(value));
+			case "_in=":
+				return path.in(dateFormat.parse(value));
+			case "_between=":			
+				final String[] dates = value.split(":");
+				final Date from = dateFormat.parse(dates[0]);
+				final Date to = dateFormat.parse(dates[1]);
+				return path.between(from, to);
+			default:
+				return null;
+			}
+		}catch(ParseException ex){
 			return null;
 		}
 	}

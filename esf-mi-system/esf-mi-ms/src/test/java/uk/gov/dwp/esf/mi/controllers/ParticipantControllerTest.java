@@ -12,8 +12,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,12 +69,13 @@ public class ParticipantControllerTest {
 
 	@Autowired
 	private ObjectMapper mapper;
-
+	private SimpleDateFormat dateFormat;
 	private MockMvc mockMvc;
 
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 
 	@After
@@ -83,12 +87,12 @@ public class ParticipantControllerTest {
 	 * Code to populate dummy data for Providers.
 	 * 
 	 */
-	private List<Provider> getProvidersList(Optional<String> providerId) {
+	private List<Provider> getProvidersList(Optional<String> providerId) throws ParseException {
 		// TODO Auto-generated method stub
 		List<Provider> providers = new ArrayList<>();
 		List<Participant> participants = new ArrayList<>();
 		final Participant participant = new Participant.ParticipantBuilder(new ObjectId().toHexString(), 1111111,
-				"SL123457B", LocalDate.now(), 4001115).creationDate(LocalDate.now()).updatedDate(LocalDate.now())
+				"SL123457B", dateFormat.parse(dateFormat.format(new Date())), 4001115).creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date())))
 						.recordState(RecordState.INCOMPLETE).build();
 
 		final Provider provider1 = new Provider();
@@ -186,7 +190,7 @@ public class ParticipantControllerTest {
 	public void testGetParticipantsByProviderId() throws Exception {
 		final List<Participant> participantsList = new ArrayList<>();
 		final Participant participant = new Participant.ParticipantBuilder("56ebb854bf9a401670d0eadc", 1111111,
-				"SL123457B", LocalDate.now(), 4001115).creationDate(LocalDate.now()).updatedDate(LocalDate.now())
+				"SL123457B", dateFormat.parse(dateFormat.format(new Date())), 4001115).creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date())))
 				.recordState(RecordState.INCOMPLETE).build();
 
 		participantsList.add(participant);
@@ -234,7 +238,7 @@ public class ParticipantControllerTest {
 	public void testGetParticipantsByProviderIdAndParticipantId() throws Exception {
 		final List<Participant> participantsList = new ArrayList<>();
 		final Participant participant = new Participant.ParticipantBuilder("12345678", 1111111,
-				"SL123457B", LocalDate.now(), 4001115).creationDate(LocalDate.now()).updatedDate(LocalDate.now())
+				"SL123457B", dateFormat.parse(dateFormat.format(new Date())), 4001115).creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date())))
 				.recordState(RecordState.INCOMPLETE).build();
 
 		participantsList.add(participant);
@@ -278,16 +282,16 @@ public class ParticipantControllerTest {
 	public void testGetFilteredParticipants() throws Exception {
 		final List<Participant> participantsList = new ArrayList<>();
 		final Participant participant1 = new Participant.ParticipantBuilder("12345677", 1111111, "SL123457B",
-				LocalDate.now(),4001115).creationDate(LocalDate.now())
-						.updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+				dateFormat.parse(dateFormat.format(new Date())),4001115).creationDate(dateFormat.parse(dateFormat.format(new Date())))
+						.updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		final Participant participant2 = new Participant.ParticipantBuilder("12345678", 1111111, "SL123457B",
-				LocalDate.now(),4001115).creationDate(LocalDate.now())
-						.updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+				dateFormat.parse(dateFormat.format(new Date())),4001115).creationDate(dateFormat.parse(dateFormat.format(new Date())))
+						.updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		final Participant participant3 = new Participant.ParticipantBuilder("12345679", 1111111, "SL123457B",
-				LocalDate.now(),4001115).creationDate(LocalDate.now())
-						.updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+				dateFormat.parse(dateFormat.format(new Date())),4001115).creationDate(dateFormat.parse(dateFormat.format(new Date())))
+						.updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		participantsList.add(participant1);
 		participantsList.add(participant2);
@@ -343,12 +347,12 @@ public class ParticipantControllerTest {
 	public void testCreateParticipant() throws Exception {
 		String REQUEST_CONTENT = "{\"participantId\":\"56b4694d7eb68a5fff76290c\",\"providerId\":1111111,\"nino\":\"SJ196058B\",\"dob\":\"1982-12-16\",\"contractId\":4001115,\"creationDate\":\"2015-01-11\",\"updatedDate\":\"2015-01-11\",\"recordState\":\"INCOMPLETE\"}";
 		final List<Participant> participantsList = new ArrayList<>();
-		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B",LocalDate.of(1982, 12, 16),4001115)
-						.creationDate(LocalDate.of(2015, 01, 11)).updatedDate(LocalDate.of(2015, 01, 11)).recordState(RecordState.INCOMPLETE)
+		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B",dateFormat.parse("1982-12-16"),4001115)
+						.creationDate(dateFormat.parse("2015-01-11")).updatedDate(dateFormat.parse("2015-01-11")).recordState(RecordState.INCOMPLETE)
 						.build();
 
-		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c",1111111, "SJ196058B", LocalDate.of(1982, 12, 16),4001115)
-						.creationDate(LocalDate.of(2015, 01, 11)).updatedDate(LocalDate.of(2015, 01, 11)).recordState(RecordState.INCOMPLETE)
+		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c",1111111, "SJ196058B", dateFormat.parse("1982-12-16"),4001115)
+						.creationDate(dateFormat.parse("2015-01-11")).updatedDate(dateFormat.parse("2015-01-11")).recordState(RecordState.INCOMPLETE)
 						.build();
 
 		participantsList.add(persistentParticipant);
@@ -394,12 +398,12 @@ public class ParticipantControllerTest {
 		String REQUEST_CONTENT = "{\"participantId\":\"56b4694d7eb68a5fff76290c\",\"providerId\":1111111,\"nino\":\"SJ196058B\",\"dob\":\"1982-12-16\",\"contractId\":4001115,\"creationDate\":\"2015-01-11\",\"updatedDate\":\"2015-01-11\",\"recordState\":\"INCOMPLETE\"}";
 		final List<Participant> participantsList = new ArrayList<>();
 		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B",
-				LocalDate.now(),4001115).creationDate(LocalDate.now())
-						.updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+				dateFormat.parse(dateFormat.format(new Date())),4001115).creationDate(dateFormat.parse(dateFormat.format(new Date())))
+						.updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c",
-				1111111, "SJ196058B", LocalDate.now(),4001115)
-						.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+				1111111, "SJ196058B", dateFormat.parse(dateFormat.format(new Date())),4001115)
+						.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		participantsList.add(persistentParticipant);
 		final List<ParticipantResource> participantList = new ArrayList<>();

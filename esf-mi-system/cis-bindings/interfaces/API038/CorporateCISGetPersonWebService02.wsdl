@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:intf="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0" xmlns:impl="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0" xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" xmlns:tns1="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0/API038_GetPerson" xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0">
+  <wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd"/>
+  <wsdl:types>
+    <schema elementFormDefault="qualified" targetNamespace="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0/API038_GetPerson" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" xmlns:impl="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0" xmlns:intf="http://dwp.gov.uk/Common/CIS/GetPerson/Service/2.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		    <import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd"/>
+			<!-- GetRequest type -->
+			<complexType name="API038_GetPersonRequest">
+				<sequence>
+					<element name="header" nillable="false" type="ciscommon:RequestHeader"/>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="historicIndicator" nillable="false" type="xsd:boolean"/>
+				</sequence>
+			</complexType>
+			<!-- GetResponse type -->			
+			<complexType name="API038_GetPersonResponse">
+				<sequence>
+					<element name="header" nillable="false" type="ciscommon:ResponseHeader"/>
+					<element name="person" nillable="false" type="tns1:Person"/>
+					<element name="personHist" nillable="true" type="tns1:PersonHist"/>
+					<element maxOccurs="unbounded" name="specialNeeds" nillable="true" type="tns1:SpecialNeeds"/>															
+				</sequence>
+			</complexType>
+			<!-- Data groups types -->
+			<complexType name="NinoGroup">
+				<sequence>
+					<element name="nino" nillable="false" type="xsd:string"/>
+					<element name="ninoSuffix" nillable="true" type="xsd:string"/>
+					<element name="ninoStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="ninoStatusTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="ninoUsageStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="ninoUsageStatusTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="ninoVerificationFlag" nillable="true" type="xsd:string"/>
+					<element name="idVerificationTypeID" nillable="true" type="xsd:string"/>	
+					<element name="idVerificationTypeDesc" nillable="true" type="xsd:string"/>						
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>				
+				</sequence>
+			</complexType>
+			<complexType name="BirthDateGroup">
+				<sequence>
+					<element name="birthDate" nillable="false" type="ciscommon:CISDate"/>
+					<element name="birthDateStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="birthDateGrpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="birthDateGrpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="birthDateGrpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="birthDateGrpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="birthDateGrpChgMdOfceLocnID" nillable="true" type="xsd:string"/>					
+					<element name="birthDateGrpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="birthDateGrpChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="birthDateGrpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="birthDateGrpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="birthDateType" nillable="true" type="xsd:string"/>
+					<element name="birthDateTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="birthDateVerificationFlagID" nillable="false" type="xsd:string"/>
+					<element name="birthDateVerificationFlagDesc" nillable="false" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="SexGroup">
+				<sequence>
+					<element name="sex" nillable="false" type="xsd:string"/>
+					<element name="sexStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="sexStartDateApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="sexEndDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="sexEndDateApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="sexChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="sexChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="DeathDateGroup">
+				<sequence>
+					<element name="deathDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="deathDateStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="deathDateChgUserID" nillable="true" type="xsd:string"/>
+					<element name="deathDateChgTermID" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="deathDateGrpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="deathDateGrpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="deathDateGrpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="deathDateVerificationFlagID" nillable="true" type="xsd:string"/>
+					<element name="deathDateVerificationFlagDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="PotViolGroup">
+				<sequence>
+					<element name="potViolTypeID" nillable="true" type="xsd:string"/>
+					<element name="potViolTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="potViolChgUserID" nillable="true" type="xsd:string"/>
+					<element name="potViolChgTermID" nillable="true" type="xsd:string"/>
+					<element name="potViolTpStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="potViolTpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="potViolTpEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="potViolTpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="potViolTpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="potViolTpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="NatSensGroup">
+				<sequence>
+					<element name="natSensRecTypeID" nillable="false" type="xsd:string"/>
+					<element name="natSensRecTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="natSensChgUserID" nillable="true" type="xsd:string"/>
+					<element name="natSensChgTermID" nillable="true" type="xsd:string"/>
+					<element name="natSensRecStartDt" nillable="false" type="ciscommon:CISDate"/>
+					<element name="natSensRecStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="natSensRecEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="natSensRecEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="natSensRecChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="natSensRecChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>			
+			<complexType name="EthnOrgnGroup">
+				<sequence>
+					<element name="ethnicOrgnTypeID" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="ethnicOrgnTpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="ethnicOrgnTpEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="ethnicOrgnTpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="ethnicOrgnTpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="ethnicOrgnTpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="PrefLangGroup">
+				<sequence>
+					<element name="prefLangTypeID" nillable="true" type="xsd:string"/>
+					<element name="prefLangTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="prefLangTpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="prefLangTpEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="prefLangTpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="prefLangTpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpChgMdOfceLocnTelNo" nillable="true" type="xsd:string"/>
+					<element name="prefLangTpChgMdDeptID" nillable="true" type="xsd:string"/>	
+					<element name="prefLangTpChgMdDeptDesc" nillable="true" type="xsd:string"/>	
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>				
+				</sequence>
+			</complexType>
+			<complexType name="SpknLangGroup">
+				<sequence>
+					<element name="spknLangTypeID" nillable="true" type="xsd:string"/>
+					<element name="spknLangTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="spknLangTpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="spknLangTpEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="spknLangTpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="spknLangTpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpChgMdOfcLocnID" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpChgMdOfcLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpChgMdOfcTelNo" nillable="true" type="xsd:string"/>										
+					<element name="spknLangTpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="spknLangTpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="PostOfceGroup">
+				<sequence>
+					<element name="restrictPoInd" nillable="true" type="xsd:string"/>					
+					<element name="postOfceStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="postOfceStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="postOfceEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="postOfceEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="postOfceCodeID" nillable="true" type="xsd:string"/>
+					<element name="postOfceCodeDesc" nillable="true" type="xsd:string"/>
+					<element name="postOfceCodeAddr1" nillable="true" type="xsd:string"/>
+					<element name="postOfceCodeAddr2" nillable="true" type="xsd:string"/>
+					<element name="postOfceCodePostCode" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="postOfceChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="ImmgrnGroup">
+				<sequence>
+					<element name="immgrnRefNumber" nillable="true" type="xsd:string"/>
+					<element name="immgrnStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="immgrnStatusTypeDesc" nillable="true" type="xsd:string"/>					
+					<element name="immgrnStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="immgrnGpStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="immgrnEndDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="immgrnGpEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="immgrnGpChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="immgrnGpChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="immgrnGpChgMdOfceLocnID" nillable="true" type="xsd:string"/>					
+					<element name="immgrnGpChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>					
+					<element name="immgrnGpChgMdOfceTelNo" nillable="true" type="xsd:string"/>					
+					<element name="immgrnGpChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="immgrnGpChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="DisabilityGroup">
+				<sequence>
+					<element name="disabilityIndicatorID" nillable="true" type="xsd:string"/>
+					<element name="disabilityIndicatorDesc" nillable="true" type="xsd:string"/>
+					<element name="disableIndStartDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="disableIndStartDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="disableIndEndDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="disableIndEndDtApplDt" nillable="true" type="ciscommon:CISDate"/>
+					<element name="disableIndChgMdBenSysID" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdBenSysDesc" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdOfceLocnID" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdOfceLocnDesc" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdOfceTelNo" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdDeptID" nillable="true" type="xsd:string"/>
+					<element name="disableIndChgMdDeptDesc" nillable="true" type="xsd:string"/>
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="OtherDataGroup">
+				<sequence>
+					<element name="nifuInterestID" nillable="true" type="xsd:string"/>
+					<element name="nifuInterestDesc" nillable="true" type="xsd:string"/>
+					<element name="maritalStatusTypeID" nillable="true" type="xsd:string"/>
+					<element name="maritalStatusTypeDesc" nillable="true" type="xsd:string"/>
+					<element name="nationalityTypeID" nillable="true" type="xsd:string"/>
+					<element name="nationalityTypeDesc" nillable="true" type="xsd:string"/>					
+					<element name="indInterest" nillable="true" type="xsd:string"/>																							
+					<element name="dateOfChange" nillable="true" type="ciscommon:CISDate"/>
+					<element name="systemOfChange" nillable="true" type="xsd:string"/>					
+					<element name="correctionFlag" nillable="true" type="xsd:string"/>	
+					<element name="histStartDate" nillable="true" type="ciscommon:CISDate"/>
+					<element name="histEndDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<complexType name="SpecialNeeds">
+				<sequence>
+					<element name="needsTypeID" nillable="false" type="xsd:string"/>
+					<element name="needsTypeDesc" nillable="false" type="xsd:string"/>
+					<element name="startDate" nillable="false" type="ciscommon:CISDate"/>
+					<element name="endDate" nillable="true" type="ciscommon:CISDate"/>
+				</sequence>
+			</complexType>
+			<!-- Person type -->						
+			<complexType name="Person">
+				<sequence>
+					<element name="ninoGroup" nillable="false" type="tns1:NinoGroup"/>
+					<element name="birthDateGroup" nillable="false" type="tns1:BirthDateGroup"/>					
+					<element name="sexGroup" nillable="false" type="tns1:SexGroup"/>
+					<element name="deathDateGroup" nillable="true" type="tns1:DeathDateGroup"/>
+					<element name="potViolGroup" nillable="true" type="tns1:PotViolGroup"/>					
+					<element name="natSensGroup" nillable="false" type="tns1:NatSensGroup"/>					
+					<element name="ethnOrgnGroup" nillable="true" type="tns1:EthnOrgnGroup"/>										
+					<element name="prefLangGroup" nillable="true" type="tns1:PrefLangGroup"/>					
+					<element name="spknLangGroup" nillable="true" type="tns1:SpknLangGroup"/>					
+					<element name="postOfceGroup" nillable="true" type="tns1:PostOfceGroup"/>			
+					<element name="immgrnGroup" nillable="true" type="tns1:ImmgrnGroup"/>
+					<element name="disabilityGroup" nillable="true" type="tns1:DisabilityGroup"/>					
+					<element name="otherDataGroup" nillable="true" type="tns1:OtherDataGroup"/>					
+				</sequence>
+			</complexType>
+			<!-- PersonHist type -->						
+			<complexType name="PersonHist">
+				<sequence>
+					<element maxOccurs="unbounded" name="ninoHistGroup" nillable="false" type="tns1:NinoGroup"/>
+					<element maxOccurs="unbounded" name="birthDateHistGroup" nillable="false" type="tns1:BirthDateGroup"/>					
+					<element maxOccurs="unbounded" name="sexHistGroup" nillable="false" type="tns1:SexGroup"/>
+					<element maxOccurs="unbounded" name="deathDateHistGroup" nillable="true" type="tns1:DeathDateGroup"/>
+					<element maxOccurs="unbounded" name="potViolHistGroup" nillable="true" type="tns1:PotViolGroup"/>					
+					<element maxOccurs="unbounded" name="natSensHistGroup" nillable="false" type="tns1:NatSensGroup"/>					
+					<element maxOccurs="unbounded" name="ethnOrgnHistGroup" nillable="true" type="tns1:EthnOrgnGroup"/>										
+					<element maxOccurs="unbounded" name="prefLangHistGroup" nillable="true" type="tns1:PrefLangGroup"/>					
+					<element maxOccurs="unbounded" name="spknLangHistGroup" nillable="true" type="tns1:SpknLangGroup"/>					
+					<element maxOccurs="unbounded" name="postOfceHistGroup" nillable="true" type="tns1:PostOfceGroup"/>			
+					<element maxOccurs="unbounded" name="immgrnHistGroup" nillable="true" type="tns1:ImmgrnGroup"/>
+					<element maxOccurs="unbounded" name="disabilityHistGroup" nillable="true" type="tns1:DisabilityGroup"/>					
+					<element maxOccurs="unbounded" name="otherDataHistGroup" nillable="true" type="tns1:OtherDataGroup"/>																					
+				</sequence>
+			</complexType>	
+			<!-- GetRequest and GetResponse elements -->
+			<element name="getPersonRequest" nillable="false" type="tns1:API038_GetPersonRequest"/>
+			<element name="getPersonResponse" nillable="false" type="tns1:API038_GetPersonResponse"/>
+		</schema>
+  </wsdl:types>
+  <wsdl:message name="GetPersonResponse">
+    <wsdl:part name="parameters" element="tns1:getPersonResponse"/>
+    <wsdl:part name="ibheader" element="header:IBHeader"/>
+  </wsdl:message>
+  <wsdl:message name="CISFaultDetails">
+    <wsdl:part name="fault" element="ciscommon:CISFaultDetails"/>
+  </wsdl:message>
+  <wsdl:message name="GetPersonRequest">
+    <wsdl:part name="parameters" element="tns1:getPersonRequest"/>
+    <wsdl:part name="ibheader" element="header:IBHeader"/>
+  </wsdl:message>
+  <wsdl:portType name="CorporateCISGetPersonWS">
+    <wsdl:operation name="GetPerson">
+      <wsdl:input name="GetPersonRequest" message="intf:GetPersonRequest"/>
+      <wsdl:output name="GetPersonResponse" message="intf:GetPersonResponse"/>
+      <wsdl:fault name="CISFaultDetails" message="intf:CISFaultDetails"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CorporateCISGetPersonWebServiceSoapBinding" type="intf:CorporateCISGetPersonWS">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetPerson">
+      <wsdlsoap:operation/>
+      <wsdl:input>
+        <wsdlsoap:body parts="parameters" use="literal"/>
+        <wsdlsoap:header message="intf:GetPersonRequest" part="ibheader" use="literal">
+        </wsdlsoap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <wsdlsoap:body parts="parameters" use="literal"/>
+        <wsdlsoap:header message="intf:GetPersonResponse" part="ibheader" use="literal">
+        </wsdlsoap:header>
+      </wsdl:output>
+      <wsdl:fault name="CISFaultDetails">
+        <wsdlsoap:fault name="CISFaultDetails" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CorporateCISGetPersonWebService">
+    <wsdl:port name="CorporateCISGetPersonWS" binding="intf:CorporateCISGetPersonWebServiceSoapBinding">
+      <wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/CorporateCISGetPersonWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

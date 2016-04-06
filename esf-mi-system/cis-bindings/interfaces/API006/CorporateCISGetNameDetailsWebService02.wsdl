@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************ 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.0     *  Simon Callan     * 23/01/2006 * Extracted from API005 Snapsnot WSDL
+	*****************************************************************************************************************-->
+<!-- 
+	* $Author: Scallan$
+	* $Date: $
+	* $Modtime: $
+	* $Revision: $
+	* $Workfile: $
+-->
+<wsdl:definitions 
+	xmlns:tns1="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0/API006_GetNameDetails" 
+	xmlns:getname="http://dwp.gov.uk/Common/CIS/GetNameDetails/Data/2.0/API006_GetNameDetails"
+	xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:header="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" 
+	xmlns:impl="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:intf="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0" 
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:responseheader="http://dwp.gov.uk/Common/CIS/Common/Data/2.1/ResponseHeader"
+	targetNamespace="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0">
+
+	<wsdl:import namespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" location="IBHeader_2.0.xsd" />
+	<wsdl:types>
+		<!-- Schema added for GetNameDetails -->
+		<schema elementFormDefault="qualified" 
+		targetNamespace="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0/API006_GetNameDetails" 
+		xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0" 
+		xmlns:tns2="http://dwp.gov.uk/Common/CIS/GetNameDetails/Data/2.0/API006_GetNameDetails" 
+		xmlns:intf="http://dwp.gov.uk/Common/CIS/GetNameDetails/Service/2.0" 
+		xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" 
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd" />
+		    <import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.1/ResponseHeader" schemaLocation="CorporateCISCommonResponseHeader02.1.xsd"/>
+			<import namespace="http://dwp.gov.uk/Common/CIS/GetNameDetails/Data/2.0/API006_GetNameDetails" schemaLocation="CorporateCISGetNameDetails02.xsd" />
+			<!-- GetResponse type -->
+			<complexType name="API006_GetNameDetailsRequest">
+				<sequence>
+					<element name="nino" nillable="false" type="xsd:string" />
+					<element name="header" nillable="false" type="ciscommon:RequestHeader" />
+					<element name="historyFlag" nillable="true" type="xsd:boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="API006_GetNameDetailsResponse">
+				<sequence>
+					<element name="header" nillable="false" type="ciscommon:ResponseHeader" />
+					<element maxOccurs="unbounded" name="nameDetails" nillable="false" type="getname:PersonName" />
+					<element maxOccurs="unbounded" name="nameDetailsHist" nillable="true" type="getname:PersonName" />
+					<element name="reqFormOfAddr" nillable="true" type="getname:RequestedFormOfAddress" />
+					<element maxOccurs="unbounded" name="reqFormOfAddrHist" nillable="true" type="getname:RequestedFormOfAddress" />
+				</sequence>
+			</complexType>
+			<element name="api006_GetNameDetailsRequest" nillable="false" type="tns1:API006_GetNameDetailsRequest" />
+			<element name="api006_GetNameDetailsResponse" nillable="false" type="tns1:API006_GetNameDetailsResponse" />		</schema>
+	</wsdl:types>
+	<wsdl:message name="CISFaultDetails">
+		<wsdl:part name="fault" element="ciscommon:CISFaultDetails" />
+	</wsdl:message>
+	<!-- Message added for GetNameDetails -->
+	<wsdl:message name="GetNameDetailsRequest">
+		<wsdl:part name="parameters" element="tns1:api006_GetNameDetailsRequest" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:message name="GetNameDetailsResponse">
+		<wsdl:part name="parameters" element="tns1:api006_GetNameDetailsResponse" />
+		<wsdl:part name="ibheader" element="header:IBHeader" />
+	</wsdl:message>
+	<wsdl:portType name="CorporateCISGetNameDetailsWS">
+		<!-- Operation added for GetNameDetails -->
+		<wsdl:operation name="GetNameDetails">
+			<wsdl:input name="GetNameDetailsRequest" message="impl:GetNameDetailsRequest" />
+			<wsdl:output name="GetNameDetailsResponse" message="impl:GetNameDetailsResponse" />
+			<wsdl:fault name="CISFaultDetails" message="impl:CISFaultDetails" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CorporateCISGetNameDetailsWebServiceSoapBinding" type="impl:CorporateCISGetNameDetailsWS">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- Operation added for GetNameDetails -->
+		<wsdl:operation name="GetNameDetails">
+			<wsdlsoap:operation />
+			<wsdl:input>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetNameDetailsRequest" part="ibheader" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body parts="parameters" use="literal" />
+				<wsdlsoap:header message="impl:GetNameDetailsResponse" part="ibheader" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CISFaultDetails">
+				<wsdlsoap:fault name="CISFaultDetails" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CorporateCISGetNameDetailsWebService">
+		<wsdl:port name="CorporateCISGetNameDetailsWS" binding="impl:CorporateCISGetNameDetailsWebServiceSoapBinding">
+			<wsdlsoap:address location="http://localhost:9080/cis_webservices_r2/services/CorporateCISGetNameDetailsWS" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
+

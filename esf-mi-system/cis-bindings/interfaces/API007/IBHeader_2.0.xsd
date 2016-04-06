@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:impl="http://dwp.gov.uk/Common/Integration/Backbone/Data/Header/2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="MessageHeaderNamespace">
+		<xs:annotation>
+			<xs:documentation>IB Message Header Namespace</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Version">
+		<xs:annotation>
+			<xs:documentation>A two digit number identfiying either the header or payload version</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionId">
+		<xs:annotation>
+			<xs:documentation>Unique id preserved throughout the lifespan of the transaction</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+			<xs:whiteSpace value="preserve"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="QueueManager">
+		<xs:annotation>
+			<xs:documentation>Preserves Queue Manager context for the response path through the IB</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Queue">
+		<xs:annotation>
+			<xs:documentation>Preserves Queue context for the response path through the IB</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Operation">
+		<xs:annotation>
+			<xs:documentation>Service Operation Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Action">
+		<xs:annotation>
+			<xs:documentation>Request/Reply (Synchronous), Update/Notify (Asynchronous), Batch</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="15"/>
+			<xs:enumeration value="Request"/>
+			<xs:enumeration value="Response"/>
+			<xs:enumeration value="Update"/>
+			<xs:enumeration value="Notify"/>
+			<xs:enumeration value="Batch"/>
+			<xs:enumeration value="Enquiry"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Description">
+		<xs:annotation>
+			<xs:documentation>Detailed textual description of the service or error</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Organisation">
+		<xs:annotation>
+			<xs:documentation>Organisation or Department (i.e. DWP)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="5"/>
+			<xs:enumeration value="DWP"/>
+			<xs:enumeration value="IR"/>
+			<xs:enumeration value="NHS"/>
+			<xs:enumeration value="DTI"/>
+			<xs:enumeration value="DEFRA"/>
+			<xs:enumeration value="DEL"/>
+			<xs:enumeration value="DOE"/>
+			<xs:enumeration value="DARD"/>
+			<xs:enumeration value="DFID"/>
+			<xs:enumeration value="DCMS"/>
+			<xs:enumeration value="DfT"/>
+			<xs:enumeration value="DCA"/>
+			<xs:enumeration value="DfES"/>
+			<xs:enumeration value="FCO"/>
+			<xs:enumeration value="MOD"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessUnit">
+		<xs:annotation>
+			<xs:documentation>Business Area (e.g. Client Group)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="5"/>
+			<xs:enumeration value="PTP"/>
+			<xs:enumeration value="FIN"/>
+			<xs:enumeration value="WS"/>
+			<xs:enumeration value="DCS"/>
+			<xs:enumeration value="CS"/>
+			<xs:enumeration value="RM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Application">
+		<xs:annotation>
+			<xs:documentation>Requesting application (system) identifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="15"/>
+			<xs:enumeration value="CAM"/>
+			<xs:enumeration value="CIS"/>
+			<xs:enumeration value="CS2"/>
+			<xs:enumeration value="CMS"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Environment">
+		<xs:annotation>
+			<xs:documentation>Environment Identifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="5"/>
+			<xs:enumeration value="Pilot"/>
+			<xs:enumeration value="Dev"/>
+			<xs:enumeration value="Tst"/>
+			<xs:enumeration value="Acp"/>
+			<xs:enumeration value="Uat"/>
+			<xs:enumeration value="Prod"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserName">
+		<xs:annotation>
+			<xs:documentation>Identifies user as an individual</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserType">
+		<xs:annotation>
+			<xs:documentation>User&apos;s business relationship with the DWP</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="48"/>
+			<xs:enumeration value="Admin"/>
+			<xs:enumeration value="ClearedInternalStaff"/>
+			<xs:enumeration value="ClearedExternalSupplier"/>
+			<xs:enumeration value="InclearedInternalStaff"/>
+			<xs:enumeration value="UnclearedExternalStaff"/>
+			<xs:enumeration value="Insecure"/>
+			<xs:enumeration value="Secure"/>
+			<xs:enumeration value="Other"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserIdentity">
+		<xs:annotation>
+			<xs:documentation>Identity used in the destination sub-system to satisfy management in that system</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LocationName">
+		<xs:annotation>
+			<xs:documentation>Location name of the user</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2"/>
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LocationAddress">
+		<xs:annotation>
+			<xs:documentation>Location address of the user</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="7"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LoggingLevel">
+		<xs:annotation>
+			<xs:documentation>Selects performance / audit logging levels on a per-transaction basis</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="FATAL"/>
+			<xs:enumeration value="ERROR"/>
+			<xs:enumeration value="PERF"/>
+			<xs:enumeration value="WARN"/>
+			<xs:enumeration value="INFO"/>
+			<xs:enumeration value="DEBUG"/>
+			<xs:enumeration value="TRACE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Expiry">
+		<xs:annotation>
+			<xs:documentation>Time an invoking system will wait prior to closing a synchronous connection</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:maxInclusive value="6000"/>
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Priority">
+		<xs:annotation>
+			<xs:documentation>Message flow priority</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="HighPrioritySynch"/>
+			<xs:enumeration value="HighPriorityAsynch"/>
+			<xs:enumeration value="MedPrioritySynch"/>
+			<xs:enumeration value="MedPriorityAsynch"/>
+			<xs:enumeration value="LowPrioritySynch"/>
+			<xs:enumeration value="LowPriorityAsynch"/>
+			<xs:enumeration value="Batch"/>
+			<xs:enumeration value="Maintenance"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Component">
+		<xs:annotation>
+			<xs:documentation>A component providing a timestamp</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DateTime">
+		<xs:annotation>
+			<xs:documentation>Date/timestamps for audit trails, performance and statistics (CCYY-MM-DD-HH-mm-SS-sss)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="20"/>
+			<xs:maxLength value="23"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Code">
+		<xs:annotation>
+			<xs:documentation>Error Code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Severity">
+		<xs:annotation>
+			<xs:documentation>Error Level</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:length value="1"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Source">
+		<xs:annotation>
+			<xs:documentation>Source of error (i.e. providing application, service, transformation etc)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="48"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="IBHeader">
+		<xs:annotation>
+			<xs:documentation>IB Generic Control Information</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Version" type="impl:Version"/>
+				<xs:element ref="impl:Identification"/>
+				<xs:element ref="impl:ServiceTypes"/>
+				<xs:element ref="impl:Source"/>
+				<xs:element ref="impl:Security"/>
+				<xs:element ref="impl:Control" minOccurs="0"/>
+				<xs:element ref="impl:Timestamps"/>
+				<xs:element ref="impl:Errors" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Identification">
+		<xs:annotation>
+			<xs:documentation>Identification, correlation and context information</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TransactionId" type="impl:TransactionId"/>
+				<xs:element name="ReplyTos" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ReplyTo" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="QueueManager" type="impl:QueueManager"/>
+										<xs:element name="Queue" type="impl:Queue"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ServiceTypes">
+		<xs:annotation>
+			<xs:documentation>Maintains a relationship between a service hierarchy with the most recent being the current service being invoked (i.e. Internal IB Utility Service ? Internal IB Business Service ? Boundary Service)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServiceType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Definition of service type and payload content</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Operation" type="impl:Operation"/>
+							<xs:element name="Version" type="impl:Version"/>
+							<xs:element name="Action" type="impl:Action" minOccurs="0"/>
+							<xs:element name="Description" type="impl:Description" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Source">
+		<xs:annotation>
+			<xs:documentation>Allows the IB (and possibly the providing external application) to validate that an invoked service came from a legitimate requesting source</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Organisation" type="impl:Organisation"/>
+				<xs:element name="BusinessUnit" type="impl:BusinessUnit"/>
+				<xs:element name="Application" type="impl:Application"/>
+				<xs:element name="Environment" type="impl:Environment"/>
+				<xs:element name="LocationName" type="impl:LocationName"/>
+				<xs:element name="LocationAddress" type="impl:LocationAddress"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Security">
+		<xs:annotation>
+			<xs:documentation>Security container</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserName" type="impl:UserName"/>
+				<xs:element name="UserType" type="impl:UserType"/>
+				<xs:element name="UserIdentity" type="impl:UserIdentity"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Control">
+		<xs:annotation>
+			<xs:documentation>Control parameters</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LoggingLevel" type="impl:LoggingLevel" default="NONE" minOccurs="0"/>
+				<xs:element name="Expiry" type="impl:Expiry" default="10" minOccurs="0"/>
+				<xs:element name="Priority" type="impl:Priority" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Timestamps">
+		<xs:annotation>
+			<xs:documentation>Internal and External timestamps provided at all touch-points for audit trails, performance statistics and timeouts</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Timestamp" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Component" type="impl:Component"/>
+							<xs:element name="DateTime" type="impl:DateTime"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Errors">
+		<xs:annotation>
+			<xs:documentation>Error container, which can handle multiple transactional type errors</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Error" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Code" type="impl:Code"/>
+							<xs:element name="Severity" type="impl:Severity"/>
+							<xs:element name="Source" type="impl:Source"/>
+							<xs:element name="Description" type="impl:Description"/>
+							<xs:element name="DateTime" type="impl:DateTime"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

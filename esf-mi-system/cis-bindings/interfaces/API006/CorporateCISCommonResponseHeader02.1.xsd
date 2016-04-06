@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************ 
+*    Version *     Changed By     * Date       * Description
+*****************************************************************************************************************  
+*     2.1     *  Simon Callan      * 28/07/05  * Created for ResponseHeader change to include for warnings
+*****************************************************************************************************************-->
+<!-- 
+ * $Author: Ddorchay $
+ * $Date: 29/07/05 12:06 $
+ * $Modtime: 29/07/05 12:04 $
+ * $Revision: 2 $
+ * $Workfile: CorporateCISCommonResponseHeader02.1.xsd $
+-->
+<xs:schema targetNamespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.1/ResponseHeader" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:CISResponseHeader="http://dwp.gov.uk/Common/CIS/Common/Data/2.1/ResponseHeader">
+    <xs:complexType name="ResponseHeader">
+        <xs:sequence>
+            <xs:element name="natSensInd" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="mgtChkInd" nillable="false" type="xs:string"/>
+		    <xs:element minOccurs="0" maxOccurs="unbounded" name="warnings" nillable="false" type="CISResponseHeader:CISWarning"/>		    
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CISWarning">
+        <xs:sequence>
+            <xs:element name="warningCode" nillable="false" type="xs:string"/>
+            <xs:element name="warningMessage" nillable="false" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

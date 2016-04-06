@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:CISCommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" targetNamespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:complexType name="RequestHeader">
+		<xs:sequence>
+			<xs:element name="userID" type="xs:string" nillable="false"/>
+			<xs:element name="userName" type="xs:string" nillable="true"/>
+			<xs:element name="accessLevel" type="xs:string" nillable="false"/>
+			<xs:element name="sessionID" type="xs:string" nillable="true"/>
+			<xs:element name="systemID" type="xs:string" nillable="false"/>
+			<xs:element name="subSystemID" type="xs:string" nillable="true"/>
+			<xs:element name="hostName" type="xs:string" nillable="false"/>
+			<xs:element name="departmentID" type="xs:string" nillable="true"/>
+			<xs:element name="locationAddress" type="xs:string" nillable="false"/>
+			<xs:element name="auditFlag" type="xs:boolean" nillable="true"/>
+			<xs:element name="nationalSensitivityAccess" type="xs:boolean" nillable="false"/>
+			<xs:element name="officeID" type="xs:string" nillable="true"/>
+			<xs:element name="kvp" type="CISCommon:kvp" nillable="true" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="kvp">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="accessControl" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="ResponseHeader">
+		<xs:sequence>
+			<xs:element name="natSensInd" type="xs:string" nillable="true"/>
+			<xs:element name="mgtChkInd" type="xs:string" nillable="true" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CISFaultDetails">
+		<xs:sequence>
+			<xs:element name="cisErrors" type="CISCommon:CISError" nillable="true" maxOccurs="unbounded"/>
+			<xs:element name="natSensInd" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CISError">
+		<xs:sequence>
+			<xs:element name="errorCode" type="xs:string" nillable="true"/>
+			<xs:element name="errorMessage" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CISFaultDetails" type="CISCommon:CISFaultDetails" nillable="true"/>
+	<xs:simpleType name="CISDate">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-9]{2}-[a-zA-Z]{3}-[0-9]{4})|(#empty value)|(#today)"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CISTime">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-9]{2}:[0-9]{2}:[0-9]{2})|(#empty value)"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

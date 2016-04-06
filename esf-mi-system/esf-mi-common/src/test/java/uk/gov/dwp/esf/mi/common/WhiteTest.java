@@ -11,7 +11,7 @@ public class WhiteTest {
         assertThat(White.ENGLISH, is(notNullValue()));
         assertThat(White.WELSH, is(notNullValue()));
         assertThat(White.SCOTTISH, is(notNullValue()));
-        assertThat(White.NORTHERS_IRISH, is(notNullValue()));
+        assertThat(White.NORTHERN_IRISH, is(notNullValue()));
         assertThat(White.BRITISH, is(notNullValue()));
         // Just to instantiate for View class
         assertNotNull(new View());

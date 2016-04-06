@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ************************************************************************************************************ 
+	*    Version *     Changed By     * Date       * Description
+	*****************************************************************************************************************  
+	*     2.0    *  Simon Callan      * 23/01/06   * Created for PERSON_ROLE_KEY inclusion
+	*****************************************************************************************************************-->
+	<!-- 
+	* $Author: Scallan$
+	* $Date: $
+	* $Modtime: $
+	* $Revision: $
+	* $Workfile: $
+-->
+<xs:schema elementFormDefault="qualified" 
+targetNamespace="http://dwp.gov.uk/Common/CIS/GetNameDetails/Data/2.0/API006_GetNameDetails" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:ciscommon="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" >
+	<xs:import namespace="http://dwp.gov.uk/Common/CIS/Common/Data/2.0/Messaging" schemaLocation="CorporateCISCommon.xsd" />
+	<!-- GetResponse type -->
+	
+	<xs:complexType name="PersonName">
+		<xs:sequence>
+			<xs:element name="title" nillable="true" type="xs:string" />
+			<xs:element name="forename" nillable="true" type="xs:string" />
+			<xs:element name="surname" nillable="false" type="xs:string" />
+			<xs:element name="nameSuffix" nillable="true" type="xs:string" />
+			<xs:element name="nameStartDate" nillable="false" type="ciscommon:CISDate" />
+			<xs:element name="nameEndDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="persNameNotifiedStartDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="nameStrtDtApplDt" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="persNameNotifiedEndDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="nameEndDtApplDt" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="persNameNotifiedStartTime" nillable="true" type="ciscommon:CISTime" />
+			<xs:element name="nameChgMdBenSysID" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdBenSysDesc" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdOfceLocnID" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdOfceLocnDesc" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdOfceLocnContactNo" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdDeptID" nillable="true" type="xs:string" />
+			<xs:element name="nameChgMdDeptDesc" nillable="true" type="xs:string" />
+			<xs:element name="nameTypeDesc" nillable="false" type="xs:string" />
+			<xs:element name="nameTypeID" nillable="false" type="xs:string" />
+			<xs:element name="correctionFlg" nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RequestedFormOfAddress">
+		<xs:sequence>
+			<xs:element name="reqFormOfAddress" nillable="false" type="xs:string" />
+			<xs:element name="reqFormOfAddStartDate" nillable="false" type="ciscommon:CISDate" />
+			<xs:element name="reqAddStartDateApplDate" nillable="false" type="ciscommon:CISDate" />
+			<xs:element name="reqFormOfAddStartTime" nillable="true" type="ciscommon:CISTime" />
+			<xs:element name="reqFormOfAddEndDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="reqAddEndDateApplDate" nillable="true" type="ciscommon:CISDate" />
+			<xs:element name="reqAddChgMdBenSysID" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdBenSysDesc" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdOfceLocnID" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdOfceLocnDesc" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdOfceLocnContactNo" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdDeptID" nillable="true" type="xs:string" />
+			<xs:element name="reqAddChgMdDeptDesc" nillable="true" type="xs:string" />
+			<xs:element name="correctionFlg" nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

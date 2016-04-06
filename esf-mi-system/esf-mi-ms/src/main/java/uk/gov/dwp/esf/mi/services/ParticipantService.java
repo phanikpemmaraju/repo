@@ -1,6 +1,9 @@
 package uk.gov.dwp.esf.mi.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,6 +43,10 @@ import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//import java.net.URL;
+//import javax.xml.namespace.QName;
+//import javax.xml.ws.WebServiceRef;
+
 @Service
 @EnableMongoRepositories(basePackages = "uk.gov.dwp.esf")
 @Transactional
@@ -47,10 +54,12 @@ public class ParticipantService {
 	
 	private ModelMapper modelMapper;
 	private RestTemplate restTemplate;
+	private SimpleDateFormat dateFormat;
 
 	public ParticipantService(){
 		modelMapper = new ModelMapper();
 		restTemplate = new RestTemplate();
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 
 	@Value("${server.port}")
@@ -195,7 +204,8 @@ public class ParticipantService {
 						esfParticipant.getParticipantId(), requestURI);
 		return participantResources;
 	}
-
+	
+	
 	/*
 	 * Delete the Participant record from the database based on the participant
 	 * Id.
@@ -222,19 +232,29 @@ public class ParticipantService {
 	 * the CIS response.
 	 * 
 	 */
-	private Address getAddress(String nino, LocalDate dob) throws DataException {
+	private Address getAddress(String nino, Date dob) throws DataException {
 		Address address = null;
 		
 		if (!nino.equalsIgnoreCase("SJ196058B"))
 			throw new DataException("error.nino.not.found","Nino " + nino + " not found");
 		
-		if (!dob.equals(LocalDate.of(1982, 12, 16)))
-			throw new DataException("error.dob.not.found","DOB " + dob.toString() + " not found");
-		
-		if (nino.equalsIgnoreCase("SJ196058B") && dob.equals(LocalDate.of(1982, 12, 16)))
-			address = new Address.AddressBuilder("Apartment 37", "Sheffield", "S1 4GG").secondLine("Royal Plaza")
-					.street("Dyche Street").district("South Yorkshire").country("UK").email("geoff.davies@gmail.com")
-					.build();
+		try {
+			if (dob.compareTo(dateFormat.parse("1982-12-16")) != 0)
+				throw new DataException("error.dob.not.found","DOB " + dob.toString() + " not found");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			if (nino.equalsIgnoreCase("SJ196058B") && dob.compareTo(dateFormat.parse("1982-12-16")) == 0)
+				address = new Address.AddressBuilder("Apartment 37", "Sheffield", "S1 4GG").secondLine("Royal Plaza")
+						.street("Dyche Street").district("South Yorkshire").country("UK").email("geoff.davies@gmail.com")
+						.build();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return address;
 	}
@@ -245,9 +265,15 @@ public class ParticipantService {
 	 * 
 	 */
 	private ParticipantDTO mapParticipantDetails(ParticipantDTO participant) {
-		participant.setCreationDate(LocalDate.now());
-		participant.setUpdatedDate(LocalDate.now());
-		participant.setRecordState(RecordState.INCOMPLETE);
+		try {
+			participant.setCreationDate(dateFormat.parse(dateFormat.format(new Date())));
+			participant.setUpdatedDate(dateFormat.parse(dateFormat.format(new Date())));
+			participant.setRecordState(RecordState.INCOMPLETE);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return participant;
 	}
 
@@ -310,6 +336,8 @@ public class ParticipantService {
 				url.append("&sort=");
 				url.append(pageable.getSort().toString());
 			}
+		}else{
+			url.append("?page=0&size=50&sort=creationDate,DESC");
 		}
 		
 		logger.info(">>> url " + url.toString());

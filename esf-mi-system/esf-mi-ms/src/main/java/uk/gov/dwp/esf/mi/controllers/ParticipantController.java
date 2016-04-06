@@ -148,7 +148,7 @@ public class ParticipantController {
 		final ResponseEntity entity = (resources == null) ? ResponseEntity.notFound().build() : ResponseEntity.ok().cacheControl(CacheControl.noCache()).body(resources);
 		return entity;
 	}
-	
+		
 	
 	/*
 	 *  This controller method deletes the Participant object for the provided participantId.

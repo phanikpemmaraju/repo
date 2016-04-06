@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+//import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +47,8 @@ import com.mysema.query.types.path.PathBuilder;
 @RunWith(MockitoJUnitRunner.class)
 public class ParticipantServiceTest {
 	
+	private SimpleDateFormat dateFormat;
+	
 	@Mock
 	private ModelMapper modelMapper;
 	
@@ -76,6 +81,7 @@ public class ParticipantServiceTest {
 	
 	@Before
 	public void setUp(){
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 
@@ -83,12 +89,12 @@ public class ParticipantServiceTest {
 	 *  Code to populate dummy data for Providers.
 	 * 
 	 */
-	private List<Provider> getProvidersList(Optional<String> providerId) {
+	private List<Provider> getProvidersList(Optional<String> providerId) throws ParseException {
 		// TODO Auto-generated method stub				
 		List<Provider> providers = new ArrayList<>();
 		List<Participant> participants = new ArrayList<>();		
-		final Participant participant = new Participant.ParticipantBuilder(new ObjectId().toHexString(), 1111111, "SL123457B", LocalDate.now(),4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant = new Participant.ParticipantBuilder(new ObjectId().toHexString(), 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 		
     	final Provider provider1 = new Provider();
     	provider1.setProviderId(1111111);provider1.setProviderName("the training provider company ltd");
@@ -195,10 +201,10 @@ public class ParticipantServiceTest {
 	public void testGetParticipantsByProviderId() throws Exception{
 		final Pageable pageable = new PageRequest(0,1,Direction.ASC,"providerId");
 		final List<Participant> participantsList = new ArrayList<>();
-		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
-		final Participant participant2 = new Participant.ParticipantBuilder("56e1624c710856201cd55f62", 1111111, "SL123457B", LocalDate.now(),4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant2 = new Participant.ParticipantBuilder("56e1624c710856201cd55f62", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
 		participantsList.add(participant1);participantsList.add(participant2);
 		
@@ -248,8 +254,8 @@ public class ParticipantServiceTest {
 	public void testGetParticipantsByProviderIdAndParticipantId() throws Exception{
 		final Pageable pageable = new PageRequest(0,1,Direction.ASC,"providerId");
 		final List<Participant> participantsList = new ArrayList<>();
-		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	    	    					
 		participantsList.add(participant1);
 		
@@ -298,11 +304,11 @@ public class ParticipantServiceTest {
 		final Pageable pageable = new PageRequest(0,1,Direction.ASC,"providerId");
 		final List<Participant> participantsList = new ArrayList<>();
 
-		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant1 = new Participant.ParticipantBuilder("56e1624c710856201cd55f61", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
-		final Participant participant2 = new Participant.ParticipantBuilder("56e1624c710856201cd55f62", 1111111, "SL123457B", LocalDate.now(),4001115)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant2 = new Participant.ParticipantBuilder("56e1624c710856201cd55f62", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001115)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 
 		participantsList.add(participant1);participantsList.add(participant2);
 		
@@ -351,12 +357,12 @@ public class ParticipantServiceTest {
 	@Test
 	public void testCreateParticipant() throws Exception{
 		final List<Participant> participantsList = new ArrayList<>();
-		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	
 				
-		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	    					
 		participantsList.add(participant);
 		List<ParticipantResource> participantResourcesList = new ArrayList<>();
@@ -368,7 +374,7 @@ public class ParticipantServiceTest {
 		});
 
 		final ParticipantDTO participantDTO = new ModelMapper().map(persistentParticipant, ParticipantDTO.class);
-		participantDTO.setDob(LocalDate.of(1982, 12, 16));participantDTO.setNino("SJ196058B");
+		participantDTO.setDob(dateFormat.parse("1982-12-16"));participantDTO.setNino("SJ196058B");
 		
 		when(participantRepository.save(modelMapper.map(participantDTO, Participant.class))).thenReturn(persistentParticipant);
 		when(participantResourceAssembler.toResourcesForAParticipant(modelMapper,participantDTO,persistentParticipant.getParticipantId(),"/providers/1111111/participants")).thenReturn(null);
@@ -396,11 +402,11 @@ public class ParticipantServiceTest {
 	@Test
 	public void testUpdateParticipant() throws Exception{
 		final List<Participant> participantsList = new ArrayList<>();
-		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant = new Participant.ParticipantBuilder(null, 1111111, "SJ196058B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
 				
-		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SJ196058B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant persistentParticipant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SJ196058B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	    					
 		participantsList.add(participant);
 		List<ParticipantResource> participantResourcesList = new ArrayList<>();
@@ -412,7 +418,7 @@ public class ParticipantServiceTest {
 		});
 		
 		final ParticipantDTO participantDTO = new ModelMapper().map(persistentParticipant, ParticipantDTO.class);
-		participantDTO.setDob(LocalDate.of(1982, 12, 16));participantDTO.setNino("SJ196058B");
+		participantDTO.setDob(dateFormat.parse("1982-12-16"));participantDTO.setNino("SJ196058B");
 		
 		when(participantRepository.findByParticipantId("56b4694d7eb68a5fff76290c")).thenReturn(persistentParticipant);
 		when(participantRepository.save(modelMapper.map(participantDTO, Participant.class))).thenReturn(persistentParticipant);
@@ -441,8 +447,8 @@ public class ParticipantServiceTest {
    	*/
 	@Test
 	public void testDeleteParticipant() throws Exception{				
-		final Participant participant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SL123457B", LocalDate.now(),4001114)
-				.creationDate(LocalDate.now()).updatedDate(LocalDate.now()).recordState(RecordState.INCOMPLETE).build();
+		final Participant participant = new Participant.ParticipantBuilder("56b4694d7eb68a5fff76290c", 1111111, "SL123457B", dateFormat.parse(dateFormat.format(new Date())),4001114)
+				.creationDate(dateFormat.parse(dateFormat.format(new Date()))).updatedDate(dateFormat.parse(dateFormat.format(new Date()))).recordState(RecordState.INCOMPLETE).build();
     	    							
 		when(participantRepository.findOne("56b4694d7eb68a5fff76290c")).thenReturn(participant);
 		participantService.deleteParticipant("56b4694d7eb68a5fff76290c");
